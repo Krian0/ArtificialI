@@ -57,9 +57,6 @@
     <ClCompile Include="KeyboardController.cpp">
       <Filter>Source Files\Behaviour</Filter>
     </ClCompile>
-    <ClCompile Include="DrunkenModifer.cpp">
-      <Filter>Source Files\Behaviour</Filter>
-    </ClCompile>
     <ClCompile Include="StateMachine.cpp">
       <Filter>Source Files\FSM</Filter>
     </ClCompile>
@@ -93,9 +90,6 @@
       <Filter>Header Files\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardController.h">
-      <Filter>Header Files\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="DrunkenModifer.h">
       <Filter>Header Files\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">

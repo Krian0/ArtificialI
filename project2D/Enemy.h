@@ -4,7 +4,7 @@
 class Enemy : public Agent
 {
 public:
-	Enemy(vector<State*> Available_States, map<StateEnum, int> State_Map, Agent* The_Player);
+	Enemy(Agent* Target, vector<State*> Available_States, map<StateEnum, int> State_Map, aie::Texture* Sprite, aie::Texture* Hit_Sprite);
 	~Enemy();
 
 	void Update(float DeltaTime) override;

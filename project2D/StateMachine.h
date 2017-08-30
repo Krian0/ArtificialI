@@ -15,7 +15,7 @@ public:
 	StateMachine(vector<State*> Available_States, map<StateEnum, int> State_Map);
 	~StateMachine();
 
-	void Update(Agent* An_Agent);
+	void Update(Agent* An_Agent, float DeltaTime);
 	void ChangeState(Agent* An_Agent, StateEnum A_State);
 	void ReturnToLastState();
 

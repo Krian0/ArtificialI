@@ -30,6 +30,8 @@ protected:
 	float m_cameraX,	m_cameraY;
 	float m_timer;
 
+	aie::Texture* m_hitSprite;
+
 	vector<State*>		m_states;
 	map<StateEnum, int> m_stateMap;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "IBehaviour.h"
 
-class KeyboardController : IBehaviour
+class KeyboardController : public IBehaviour
 {
 public:
 	KeyboardController();

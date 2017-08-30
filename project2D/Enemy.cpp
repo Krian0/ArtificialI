@@ -1,11 +1,18 @@
 #include "Enemy.h"
 
-Enemy::Enemy(vector<State*> Available_States, map<StateEnum, int> State_Map, Agent* The_Player)
+Enemy::Enemy(Agent* Target, vector<State*> Available_States, map<StateEnum, int> State_Map, aie::Texture* Sprite, aie::Texture* Hit_Sprite)
 {
 	m_brain.stateMachine = new StateMachine(Available_States, State_Map);
-	m_brain.target = The_Player;
+	m_brain.target = Target;
 
 	m_brain.stateMachine->ChangeState(this, WANDER);
+
+	m_frame.m_sprite = Sprite;
+	m_frame.m_hitSprite = Hit_Sprite;
+
+	m_flickerCounter = 0;
+	m_flickerTime = 0;
+	m_firstRound = false;
 }
 
 Enemy::~Enemy()
@@ -15,21 +22,51 @@ Enemy::~Enemy()
 
 void Enemy::Update(float DeltaTime)
 {
-	m_brain.stateMachine->Update(this);
-
-	m_frame.velocity += m_frame.force * DeltaTime;
+	m_brain.stateMachine->Update(this, DeltaTime);
 
 	//Move
+	m_frame.velocity += m_frame.force * DeltaTime;
+
 	if (m_frame.velocity.magnitude() > m_velocityLimit)
 	{
 		m_frame.velocity.normaliseDirect();
 		m_frame.velocity *= m_velocityLimit;
 	}
 
-	m_frame.position += m_frame.velocity * DeltaTime;
+	Vector2 NewPos = m_frame.collider.GetMidPos() += m_frame.velocity * DeltaTime;
+	m_frame.collider.SetMidPos(NewPos);
+	//~
+
+
+	//Count how much time has passed if counter is above 0 (enemy has been hit), skips once each time the enemy has been hit
+	if (m_flickerCounter > 0 && m_firstRound == false)
+		m_flickerTime + DeltaTime;
+	//~
 }
 
 void Enemy::Draw(aie::Renderer2D* renderer)
 {
+	Vector2 Pos = m_frame.collider.GetMidPos;
 
+	//Draw sprite: if enemy has been hit, the sprite drawn will switch between m_hitSprite and m_sprite every 0.4 seconds 5 times
+	if (m_flickerCounter == 1 || m_flickerCounter == 3 || m_flickerCounter == 5)
+	{
+		renderer->drawSprite(m_frame.m_hitSprite, Pos.x, Pos.y, 100, 100);
+
+		if (m_firstRound == true)
+			m_firstRound = false;
+	}
+
+	else
+		renderer->drawSprite(m_frame.m_sprite, Pos.x, Pos.y, 100, 100);
+	//~
+
+
+	//If 0.4 or more seconds has passed since the last sprite switch, and there are still switches left, switch sprites
+	if (m_flickerTime >= 0.4 && m_flickerCounter > 0)
+	{
+		m_flickerTime = 0;
+		m_flickerCounter--;
+	}
+	//~
 }

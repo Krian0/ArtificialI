@@ -12,9 +12,9 @@ StateMachine::~StateMachine()
 }
 
 
-void StateMachine::Update(Agent* An_Agent)
+void StateMachine::Update(Agent* An_Agent, float DeltaTime)
 {
-	m_currentState->Update(An_Agent, this);
+	m_currentState->Update(An_Agent, this, DeltaTime);
 }
 
 void StateMachine::ChangeState(Agent* An_Agent, StateEnum A_State)

@@ -4,7 +4,7 @@
 class Player : public Agent
 {
 public:
-	Player(Agent* Enemy_Target);
+	Player(Agent* Target, aie::Texture* Hit_Sprite);
 	~Player();
 
 	void Update(float DeltaTime) override;

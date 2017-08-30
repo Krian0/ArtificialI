@@ -1,5 +1,7 @@
 #pragma once
 #include "StateMachine.h"
+#include "IBehaviour.h"
+#include "Texture.h"
 #include "Vector2.h"
 #include "Circle.h"
 #include "Agent.h"
@@ -8,11 +10,11 @@ using std::vector;
 
 struct EntityFrame
 {
-	float radius;
-
 	Circle collider;
 
-	Vector2 position;
+	aie::Texture* m_sprite;
+	aie::Texture* m_hitSprite;
+
 	Vector2 force;
 	Vector2 velocity;
 };
@@ -20,7 +22,7 @@ struct EntityFrame
 struct EntityBrain
 {
 	Agent* target;
-	vector<IBehaviour*> behaviours;
 	
+	vector<IBehaviour*> behaviours;
 	StateMachine *stateMachine;
 };

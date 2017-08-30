@@ -28,6 +28,8 @@ bool Application2D::startup()
 	m_stateMap[WANDER] = 1;
 	m_stateMap[CHASE] = 2;
 
+	m_hitSprite = new aie::Texture("./textures/ball.png");
+
 	return true;
 }
 

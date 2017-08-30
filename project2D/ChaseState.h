@@ -7,7 +7,7 @@ public:
 	ChaseState() {}
 	~ChaseState() {}
 
-	void Update(Agent* An_Agent, StateMachine* sm) override;
+	void Update(Agent* An_Agent, StateMachine* sm, float DeltaTime) override;
 	void Init(Agent* An_Agent) override;
 	void Exit(Agent* An_Agent) override;
 

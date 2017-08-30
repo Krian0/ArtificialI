@@ -95,7 +95,6 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="ChaseState.cpp" />
     <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="DrunkenModifer.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="main.cpp" />
@@ -109,7 +108,6 @@
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="ChaseState.h" />
     <ClInclude Include="Circle.h" />
-    <ClInclude Include="DrunkenModifer.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EntityStructs.h" />
     <ClInclude Include="Enum.h" />

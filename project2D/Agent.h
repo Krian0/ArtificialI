@@ -1,7 +1,6 @@
 #pragma once
 #include "EntityStructs.h"
 #include "Renderer2D.h"
-#include "IBehaviour.h"
 
 class Agent
 {
@@ -14,6 +13,7 @@ public:
 	virtual void Draw(aie::Renderer2D* renderer) = 0;
 
 	void AddForce(Vector2 force);
+	void OnHit();
 
 	Vector2	GetPos();
 	Vector2	GetTargetPos();
@@ -28,6 +28,10 @@ protected:
 
 	EntityFrame m_frame;
 	EntityBrain m_brain;
+
+	int		m_flickerCounter;
+	float	m_flickerTime;
+	bool	m_firstRound;
 
 private:
 
