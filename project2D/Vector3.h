@@ -29,37 +29,23 @@ public:
 #pragma endregion											        
 															        
 															        
-#pragma region Operators									        
-	Vector3 operator + (Vector3 RHS);                        //Vec + Vec = Vec
-	Vector3 operator - (Vector3 RHS);					     //Vec - Vec = Vec
-	Vector3 operator * (float RHS);						     //Vec * Float = Vec
-	Vector3 operator / (float RHS);						     //Vec / Float = Vec
-	Vector3 operator = (Vector3 RHS);					     //Vec = Vec
-	Vector3 operator += (Vector3 RHS);					     //Vec += Vec
-	Vector3 operator -= (Vector3 RHS);					     //Vec -= Vec
-	Vector3 operator *= (float RHS);					     //Vec *= Float
-	Vector3 operator /= (float RHS);					     //Vec /= Float
-	bool operator == (Vector3 RHS);						     //Does Vec == Vec?
-	bool operator != (Vector3 RHS);						     //Does Vec != Vec?
-	friend Vector3 operator * (float LHS, Vector3 RHS)       //Float * Vec = Vec
-	{
-		Vector3 Temp;
-		for (int i = 0; i < 3; i++)
-			Temp.Float[i] = LHS * RHS.Float[i];
+#pragma region Operators								       
+	Vector3 operator + (Vector3 RHS);						//Vec + Vec = Vec
+	Vector3 operator - (Vector3 RHS);						//Vec - Vec = Vec
+	Vector3 operator * (float RHS);							//Vec * Float = Vec
+	Vector3 operator / (float RHS);							//Vec / Float = Vec
+	Vector3 operator = (Vector3 RHS);						//Vec = Vec
+	Vector3 operator += (Vector3 RHS);						//Vec += Vec
+	Vector3 operator -= (Vector3 RHS);						//Vec -= Vec
+	Vector3 operator *= (float RHS);						//Vec *= Float
+	Vector3 operator /= (float RHS);						//Vec /= Float
+	bool operator == (Vector3 RHS);							//Does Vec == Vec?
+	bool operator != (Vector3 RHS);							//Does Vec != Vec?
+	friend Vector3 operator * (float LHS, Vector3 RHS);		//Float * Vec = Vec
+	friend Vector3 operator / (float LHS, Vector3 RHS);		//Float / Vec = Vec
 
-		return Temp;
-	}
-	friend Vector3 operator / (float LHS, Vector3 RHS)		//Float / Vec = Vec
-	{
-		Vector3 Temp;
-		for (int i = 0; i < 3; i++)
-			Temp.Float[i] = LHS / RHS.Float[i];
-
-		return Temp;
-	}
-															   
-	float& operator[] (int Index);					//Subscript Operator.
-	explicit operator float*() { return &x;	};		//Cast Operator.
+	float& operator[] (int Index) { return Float[Index]; }	//Subscript Operator.
+	explicit operator float*() { return &x;	};				//Cast Operator.
 #pragma endregion											   
 															   
 															   
@@ -69,5 +55,7 @@ public:
 	Vector3 cross(Vector3 & V2);		//Cross Product.
 	void normaliseDirect();			    //Normalise the vector.
 	Vector3 normalise();		     	//Normalise a copy of the vector.
+
+	void SetVector(float X, float Y, float Z);
 #pragma endregion
 };

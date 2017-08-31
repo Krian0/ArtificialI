@@ -71,9 +71,11 @@ void Circle::SetCircle_FromPoints(const Vector2 *PointArray, int NumOfPoints)
 			if (m_midPos.dot(Temp) > LastDistance)
 				LastDistance = m_midPos.dot(Temp);
 		}
+		//~
 
 		//Sets Radius to square root of the Largest Distance.
 		m_radius = sqrt(LastDistance);
+		//~
 	}
 }
 #pragma endregion

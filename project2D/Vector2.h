@@ -29,36 +29,22 @@ public:
 															   
 															   
 #pragma region Operators									   
-	Vector2 operator + (Vector2 RHS);                                //Vec + Vec = Vec
-	Vector2 operator - (Vector2 RHS);                                //Vec - Vec = Vec
-	Vector2 operator * (float RHS);                                  //Vec * Float = Vec
-	Vector2 operator / (float RHS);                                  //Vec / Float = Vec
-	Vector2 operator = (Vector2 RHS);                                //Vec = Vec
-	Vector2 operator += (Vector2 RHS);                               //Vec += Vec
-	Vector2 operator -= (Vector2 RHS);                               //Vec -= Vec
-	Vector2 operator *= (float RHS);                                 //Vec *= Float
-	Vector2 operator /= (float RHS);                                 //Vec /= Float
-	bool operator == (Vector2 RHS);                                  //Does Vec == Vec?
-	bool operator != (Vector2 RHS);                                  //Does Vec != Vec?
-	friend Vector2 operator * (const float LHS, const Vector2 RHS)   //Float * Vec = Vec
-	{
-		Vector2 Temp;
-		for (int i = 0; i < 2; i++)
-			Temp.Float[i] = LHS * RHS.Float[i];
+	Vector2 operator + (Vector2 RHS);									//Vec + Vec = Vec
+	Vector2 operator - (Vector2 RHS);									//Vec - Vec = Vec
+	Vector2 operator * (float RHS);										//Vec * Float = Vec
+	Vector2 operator / (float RHS);										//Vec / Float = Vec
+	Vector2 operator = (Vector2 RHS);									//Vec = Vec
+	Vector2 operator += (Vector2 RHS);									//Vec += Vec
+	Vector2 operator -= (Vector2 RHS);									//Vec -= Vec
+	Vector2 operator *= (float RHS);									//Vec *= Float
+	Vector2 operator /= (float RHS);									//Vec /= Float
+	bool operator == (Vector2 RHS);										//Does Vec == Vec?
+	bool operator != (Vector2 RHS);										//Does Vec != Vec?
+	friend Vector2 operator * (const float LHS, const Vector2 RHS);		//Float * Vec = Vec
+	friend Vector2 operator / (const float LHS, const Vector2 RHS);		//Float / Vec = Vec
 
-		return Temp;
-	}
-	friend Vector2 operator / (const float LHS, const Vector2 RHS)    //Float / Vec = Vec
-	{
-		Vector2 Temp;
-		for (int i = 0; i < 2; i++)
-			Temp.Float[i] = LHS / RHS.Float[i];
-
-		return Temp;
-	}
-
-	float& operator[] (int Index);               //Subscript Operator.
-	explicit operator float*() { return &x; };   //Cast Operator.
+	float& operator[] (int Index) {	return Float[Index]; }	//Subscript Operator.
+	explicit operator float*() { return &x; };				//Cast Operator.
 #pragma endregion
 
 
@@ -67,5 +53,7 @@ public:
 	float magnitude();        //Magnitude.
 	void normaliseDirect();   //Normalise the vector.
 	Vector2 normalise();      //Normalise a copy of the vector.
+
+	void SetVector(float X, float Y);
 #pragma endregion
 };

@@ -109,8 +109,6 @@
     <ClInclude Include="ChaseState.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EntityStructs.h" />
-    <ClInclude Include="Enum.h" />
     <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Player.h" />

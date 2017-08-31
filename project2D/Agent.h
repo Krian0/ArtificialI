@@ -1,37 +1,53 @@
 #pragma once
-#include "EntityStructs.h"
+#include "Circle.h"
+#include "Texture.h"
 #include "Renderer2D.h"
+using aie::Texture;
+using aie::Renderer2D;
 
 class Agent
 {
 
 public:
 	Agent() {}
-	virtual ~Agent() = 0;
+	~Agent() {};
 
 	virtual void Update(float DeltaTime) = 0;
-	virtual void Draw(aie::Renderer2D* renderer) = 0;
+	virtual void Draw(Renderer2D* renderer) = 0;
 
+	//Sets m_force to the Vector2 parameter
 	void AddForce(Vector2 force);
+	//Makes the Agent's sprite flicker to a hit-sprite and back several times upon being hit
 	void OnHit();
 
+	//Returns variable matching the function name
 	Vector2	GetPos();
 	Vector2	GetTargetPos();
 	Agent*	GetTarget();
 	Circle	GetCollider();
+	//~
 
-	int m_sightRange = 100;
-	int m_attackRange = 80;
-	int m_velocityLimit = 100;
+	const int m_sightRange = 250;
+	const int m_attackRange = 80;
 
 protected:
-
-	EntityFrame m_frame;
-	EntityBrain m_brain;
 
 	int		m_flickerCounter;
 	float	m_flickerTime;
 	bool	m_firstRound;
+
+
+	//
+	Circle m_collider;
+
+	Texture* m_sprite;
+	Texture* m_hitSprite;
+
+	Vector2 m_force;
+	Vector2 m_velocity;
+
+	//
+	Agent* m_target;
 
 private:
 

@@ -2,12 +2,11 @@
 
 void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
-	//Find distance from enemy to player and the enemy sightrange squared
+	//Work out the distance from Enemy to Player and the Enemy's sightrange squared
 	Vector2 TargetPos = An_Agent->GetTargetPos();
 	Vector2 AgentPos = An_Agent->GetPos();
-
 	float Distance = AgentPos.dot(TargetPos);
-	float SightRange = An_Agent->m_sightRange * An_Agent->m_sightRange;
+	int SightRange = An_Agent->m_sightRange * An_Agent->m_sightRange;
 	//~
 
 
@@ -25,7 +24,7 @@ void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 	{
 		Vector2 Direction = TargetPos - AgentPos;
 		Direction.normaliseDirect();
-		An_Agent->AddForce(Direction);
+		An_Agent->AddForce(Direction * 100);
 	}
 	//~
 }

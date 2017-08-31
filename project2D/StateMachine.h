@@ -1,13 +1,20 @@
 #pragma once
-#include "Enum.h"
 #include "Agent.h"
 #include "State.h"
-#include "AttackState.h"
-#include "WanderState.h"
-#include "ChaseState.h"
-
+#include <vector>
 #include <map>
+using std::vector;
 using std::map;
+
+enum StateEnum
+{
+	ATTACK = 0,
+	WANDER,
+	CHASE,
+	END
+};
+
+class State;
 
 class StateMachine
 {
@@ -19,8 +26,8 @@ public:
 	void ChangeState(Agent* An_Agent, StateEnum A_State);
 	void ReturnToLastState();
 
-	State *GetCurrentState();
-	State *GetPrevState();
+	State* GetCurrentState();
+	State* GetPrevState();
 
 	map<StateEnum, int> m_stateMap;
 	vector<State*>		m_availableStates;

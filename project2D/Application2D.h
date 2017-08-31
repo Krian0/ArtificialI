@@ -7,7 +7,9 @@
 #include "Matrix2.h"
 
 //
-#include "Enemy.h"
+#include "AttackState.h"
+#include "WanderState.h"
+#include "ChaseState.h"
 #include "Player.h"
 
 class Application2D : public aie::Application 
@@ -35,4 +37,5 @@ protected:
 	vector<State*>		m_states;
 	map<StateEnum, int> m_stateMap;
 
+	Player* m_player;
 };

@@ -1,6 +1,7 @@
 #pragma once
-#include "Agent.h"
 #include "StateMachine.h"
+
+class StateMachine;
 
 class State
 {

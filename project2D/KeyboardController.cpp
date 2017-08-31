@@ -1,5 +1,4 @@
 #include "KeyboardController.h"
-#include "Input.h"
 
 KeyboardController::KeyboardController()
 {
@@ -9,7 +8,7 @@ KeyboardController::~KeyboardController()
 {
 }
 
-void KeyboardController::Update(Player* The_Player)
+void KeyboardController::Update(Agent* The_Player)
 {
 	aie::Input* input = aie::Input::getInstance();
 	bool up = false, down = false, left = false, right = false;
@@ -40,16 +39,16 @@ void KeyboardController::Update(Player* The_Player)
 	Vector2 Vec(0, 0);
 
 	if (up == true && down == false)
-		Vec.y = 1;
+		Vec.y = 100;
 
 	if (down == true && up == false)
-		Vec.y = -1;
+		Vec.y = -100;
 
 	if (left == true && right == false)
-		Vec.x = 1;
+		Vec.x = -100;
 
 	if (right == true && left == false)
-		Vec.x = -1;
+		Vec.x = 100;
 	//~
 
 	The_Player->AddForce(Vec);

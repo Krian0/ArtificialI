@@ -3,6 +3,8 @@
 #include "Font.h"
 #include "Input.h"
 
+//
+
 
 Application2D::Application2D() 
 {
@@ -30,6 +32,8 @@ bool Application2D::startup()
 
 	m_hitSprite = new aie::Texture("./textures/ball.png");
 
+	m_player = new Player(nullptr, m_hitSprite, Vector2(500, 500), 44);
+
 	return true;
 }
 
@@ -37,18 +41,20 @@ void Application2D::shutdown()
 {
 	delete m_2dRenderer;
 
-	while (m_states.size > 0)
+	while (m_states.size() > 0)
 		m_states.pop_back();
 }
 
 void Application2D::update(float deltaTime) 
 {
 	m_timer += deltaTime;
-
+	
 	aie::Input* input = aie::Input::getInstance();
 
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
+
+	m_player->Update(deltaTime);
 }
 
 void Application2D::draw() 
@@ -56,5 +62,8 @@ void Application2D::draw()
 	clearScreen();
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 	m_2dRenderer->begin();
+
+	m_player->Draw(m_2dRenderer);
+
 	m_2dRenderer->end();
 }

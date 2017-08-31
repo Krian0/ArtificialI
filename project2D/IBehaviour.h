@@ -1,5 +1,5 @@
 #pragma once
-#include "Player.h"
+#include "Agent.h"
 
 class IBehaviour
 {
@@ -8,7 +8,7 @@ public:
 	IBehaviour() {}
 	virtual ~IBehaviour() {}
 
-	virtual void Update(Player* The_Player) = 0;
+	virtual void Update(Agent* The_Player) = 0;
 
 private:
 

@@ -31,36 +31,22 @@ public:
 
 
 #pragma region Operators                                                
-	Vector4 operator + (Vector4 RHS);                       //Vec + Vec = Vec 
+	Vector4 operator + (Vector4 RHS);						//Vec + Vec = Vec 
 	Vector4 operator - (Vector4 RHS);						//Vec - Vec = Vec
-	Vector4 operator * (float RHS);						    //Vec * Float = Vec
-	Vector4 operator / (float RHS);						    //Vec / Float = Vec
+	Vector4 operator * (float RHS);							//Vec * Float = Vec
+	Vector4 operator / (float RHS);							//Vec / Float = Vec
 	Vector4 operator = (Vector4 RHS);						//Vec = Vec
 	Vector4 operator += (Vector4 RHS);						//Vec += Vec
 	Vector4 operator -= (Vector4 RHS);						//Vec -= Vec
 	Vector4 operator *= (float RHS);						//Vec *= Float
 	Vector4 operator /= (float RHS);						//Vec /= Float
-	bool operator == (Vector4 RHS);						    //Does Vec == Vec?
-	bool operator != (Vector4 RHS);						    //Does Vec != Vec?
-	friend Vector4 operator * (float LHS, Vector4 RHS)		//Float * Vec = Vec
-	{
-		Vector4 Temp;
-		for (int i = 0; i < 4; i++)
-			Temp.Float[i] = LHS * RHS.Float[i];
-
-		return Temp;
-	}
-	friend Vector4 operator / (float LHS, Vector4 RHS)      //Float / Vec = Vec
-	{
-		Vector4 Temp;
-		for (int i = 0; i < 4; i++)
-			Temp.Float[i] = LHS / RHS.Float[i];
-
-		return Temp;
-	}
+	bool operator == (Vector4 RHS);							//Does Vec == Vec?
+	bool operator != (Vector4 RHS);							//Does Vec != Vec?
+	friend Vector4 operator * (float LHS, Vector4 RHS);		//Float * Vec = Vec
+	friend Vector4 operator / (float LHS, Vector4 RHS);		//Float / Vec = Vec
 															   
-	float& operator[] (int Index);					  //Subscript Operator.
-	explicit operator float*() { return &x; };        //Cast Operator.
+	float& operator[] (int Index) { return Float[Index]; }	//Subscript Operator.
+	explicit operator float*() { return &x; };				//Cast Operator.
 #pragma endregion											   
 															   
 															   
@@ -70,6 +56,7 @@ public:
 	Vector4 cross(Vector4 & V2);		//Cross Product.
 	void normaliseDirect();			    //Normalise the vector.
 	Vector4 normalise();			    //Normalise a copy of the vector.
+
+	void SetVector(float X, float Y, float Z, float W);
 #pragma endregion
 };
-

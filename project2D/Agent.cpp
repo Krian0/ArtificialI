@@ -2,7 +2,7 @@
 
 void Agent::AddForce(Vector2 force)
 {
-	m_frame.force = force;
+	m_force = force;
 }
 
 void Agent::OnHit()
@@ -17,20 +17,20 @@ void Agent::OnHit()
 //Get Functions
 Vector2 Agent::GetPos()
 {
-	return m_frame.collider.GetMidPos();
+	return m_collider.GetMidPos();
 }
 
 Vector2 Agent::GetTargetPos()
 {
-	return m_brain.target->GetPos();
+	return m_target->GetPos();
 }
 
 Agent* Agent::GetTarget()
 {
-	return m_brain.target;
+	return m_target;
 }
 
 Circle Agent::GetCollider()
 {
-	return m_frame.collider;
+	return m_collider;
 }

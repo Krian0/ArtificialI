@@ -104,13 +104,7 @@
     <ClInclude Include="StateMachine.h">
       <Filter>Header Files\FSM</Filter>
     </ClInclude>
-    <ClInclude Include="EntityStructs.h">
-      <Filter>Header Files\Etc</Filter>
-    </ClInclude>
     <ClInclude Include="Circle.h">
-      <Filter>Header Files\Etc</Filter>
-    </ClInclude>
-    <ClInclude Include="Enum.h">
       <Filter>Header Files\Etc</Filter>
     </ClInclude>
     <ClInclude Include="AttackState.h">
