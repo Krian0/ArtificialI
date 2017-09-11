@@ -8,7 +8,7 @@ public:
 	KeyboardController();
 	~KeyboardController();
 
-	void Update(Agent* The_Player) override;
+	void Update(Agent* An_Agent, float DeltaTime) override;
 	
 private:
 

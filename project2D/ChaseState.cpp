@@ -2,30 +2,31 @@
 
 void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
-	//Work out the distance from Enemy to Player and the Enemy's sightrange squared
+	//Work out the distance from Enemy to Player
 	Vector2 TargetPos = An_Agent->GetTargetPos();
 	Vector2 AgentPos = An_Agent->GetPos();
-	float Distance = AgentPos.dot(TargetPos);
-	int SightRange = An_Agent->m_sightRange * An_Agent->m_sightRange;
+	float Distance = (AgentPos - TargetPos).magnitude();
 	//~
 
 
 	//Change state if the proper conditions are met
-	if (Distance > SightRange)
+	if (Distance > An_Agent->m_sightRange)
+	{
 		sm->ChangeState(An_Agent, WANDER);
+		return;
+	}
 
 	if (Distance <= An_Agent->m_attackRange)
+	{
 		sm->ChangeState(An_Agent, ATTACK);
+		return;
+	}
 	//~
 
 
-	//Otherwise, move enemy towards player (continue to chase)
+	//Otherwise, move enemy towards Player (continue to chase)
 	else
-	{
-		Vector2 Direction = TargetPos - AgentPos;
-		Direction.normaliseDirect();
-		An_Agent->AddForce(Direction * 100);
-	}
+		
 	//~
 }
 

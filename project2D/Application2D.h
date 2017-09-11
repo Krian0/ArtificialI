@@ -10,7 +10,9 @@
 #include "AttackState.h"
 #include "WanderState.h"
 #include "ChaseState.h"
+#include "FleeState.h"
 #include "Player.h"
+#include "Enemy.h"
 
 class Application2D : public aie::Application 
 {
@@ -32,10 +34,14 @@ protected:
 	float m_cameraX,	m_cameraY;
 	float m_timer;
 
+	aie::Texture* m_enemySprite;
 	aie::Texture* m_hitSprite;
 
 	vector<State*>		m_states;
 	map<StateEnum, int> m_stateMap;
 
+
 	Player* m_player;
+
+	vector<Agent*> m_enemies;
 };

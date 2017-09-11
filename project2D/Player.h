@@ -6,16 +6,17 @@ using std::vector;
 class Player : public Agent
 {
 public:
-	Player(Agent* Target, Texture* Hit_Sprite, Vector2 Position, float Radius);
+	Player(Texture* Hit_Sprite, Vector2 Position, float Radius);
 	~Player();
 
 	void Update(float DeltaTime) override;
 	void Draw(Renderer2D* renderer) override;
 
+	void FindClosestEnemy(vector<Agent*> Enemies);
+
 private:
 
 	vector<IBehaviour*> m_behaviours;
-
-	int m_velocityLimit = 500;
+	vector<Agent*> m_enemyList;
 
 };

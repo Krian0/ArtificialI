@@ -1,5 +1,5 @@
 #pragma once
-#include "Circle.h"
+#include "Vector2.h"
 #include "Texture.h"
 #include "Renderer2D.h"
 using aie::Texture;
@@ -19,35 +19,44 @@ public:
 	void AddForce(Vector2 force);
 	//Makes the Agent's sprite flicker to a hit-sprite and back several times upon being hit
 	void OnHit();
+	void OnFlee();
 
 	//Returns variable matching the function name
-	Vector2	GetPos();
-	Vector2	GetTargetPos();
 	Agent*	GetTarget();
-	Circle	GetCollider();
+	Vector2	GetTargetPos();
+	Vector2	GetPos();
+	Vector2 GetCurrentVelocity();
+
+	float	GetRadius();
+	bool	WasAttacked();
+	bool	HasHitWall();
+	bool	Collision(Agent* The_Target);
 	//~
 
-	const int m_sightRange = 250;
-	const int m_attackRange = 80;
+	int m_sightRange;
+	int m_attackRange;
+	int m_velocityLimit;
 
 protected:
 
-	int		m_flickerCounter;
-	float	m_flickerTime;
-	bool	m_firstRound;
-
-
-	//
-	Circle m_collider;
-
+	//Body
 	Texture* m_sprite;
 	Texture* m_hitSprite;
 
+	Vector2 m_position;
 	Vector2 m_force;
 	Vector2 m_velocity;
 
-	//
-	Agent* m_target;
+	float	m_radius;
+
+	//Brain
+	Agent*	m_target;
+
+	bool	m_wasAttacked;
+	bool	m_hitWall;
+	bool	m_firstRound;
+	int		m_flickerCounter;
+	float	m_flickerTime;
 
 private:
 

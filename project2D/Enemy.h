@@ -13,7 +13,4 @@ public:
 private:
 
 	StateMachine* m_stateMachine;
-
-	int m_velocityLimit = 480;
-
 };

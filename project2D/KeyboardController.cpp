@@ -8,7 +8,7 @@ KeyboardController::~KeyboardController()
 {
 }
 
-void KeyboardController::Update(Agent* The_Player)
+void KeyboardController::Update(Agent* An_Agent, float DeltaTime)
 {
 	aie::Input* input = aie::Input::getInstance();
 	bool up = false, down = false, left = false, right = false;
@@ -29,9 +29,21 @@ void KeyboardController::Update(Agent* The_Player)
 	//~
 
 
-	//Detect pressed action keys and call matching function
+	//Detect pressed action keys and call matching function if conditions are met
 	if (input->isKeyDown(aie::INPUT_KEY_SPACE))
-		The_Player->OnHit();
+	{
+		if (An_Agent->GetTarget() != NULL)
+		{
+			Vector2 TargetPos = An_Agent->GetTargetPos();
+			Vector2 Pos = TargetPos - An_Agent->GetPos();
+
+			float TargetRadius = An_Agent->GetTarget()->GetRadius();
+			float CombinedRadiiSquared = (An_Agent->m_attackRange + TargetRadius) * (An_Agent->m_attackRange + TargetRadius);
+			
+			if (Pos.dot(Pos) <= CombinedRadiiSquared)
+				An_Agent->GetTarget()->OnHit();
+		}
+	}
 	//~
 
 
@@ -51,5 +63,5 @@ void KeyboardController::Update(Agent* The_Player)
 		Vec.x = 100;
 	//~
 
-	The_Player->AddForce(Vec);
+	An_Agent->AddForce(Vec);
 }

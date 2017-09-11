@@ -8,7 +8,7 @@ public:
 	IBehaviour() {}
 	virtual ~IBehaviour() {}
 
-	virtual void Update(Agent* The_Player) = 0;
+	virtual void Update(Agent* An_Agent, float DeltaTime) = 0;
 
 private:
 

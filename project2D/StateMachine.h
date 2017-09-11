@@ -11,6 +11,7 @@ enum StateEnum
 	ATTACK = 0,
 	WANDER,
 	CHASE,
+	FLEE,
 	END
 };
 
@@ -19,7 +20,7 @@ class State;
 class StateMachine
 {
 public:
-	StateMachine(vector<State*> Available_States, map<StateEnum, int> State_Map);
+	StateMachine(vector<State*> Available_States, map<StateEnum, int> State_Map, Agent* An_Agent);
 	~StateMachine();
 
 	void Update(Agent* An_Agent, float DeltaTime);

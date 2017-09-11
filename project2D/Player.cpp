@@ -1,19 +1,23 @@
 #include "Player.h"
 
-Player::Player(Agent* Target, Texture* Hit_Sprite, Vector2 Position, float Radius)
+Player::Player(Texture* Hit_Sprite, Vector2 Position, float Radius)
 {
-	m_target	= Target;
+	m_target	= NULL;
 	m_behaviours.push_back(new KeyboardController);
 	m_velocityLimit = 800;
 
 	m_sprite	= new Texture("./textures/ball_2.png");
 	m_hitSprite	= Hit_Sprite;
-	m_collider.SetMidPos(Position);
-	m_collider.SetRadius(Radius);
+	m_position = Position;
+	m_radius = Radius;
 
 	m_flickerCounter	= 0;
 	m_flickerTime		= 0;
 	m_firstRound		= false;
+
+	m_sightRange = 250;
+	m_attackRange = 40;
+	m_velocityLimit = 500;
 }
 
 Player::~Player()
@@ -36,60 +40,47 @@ void Player::Update(float DeltaTime)
 	//Move
 	m_velocity += m_force * DeltaTime;
 
-	//Slow the Player's movement in a particular direction if the corresponding direction key is not being pressed
-	if (m_force.x == 0)
-	{
-		if (m_velocity.x > 0)
-			m_velocity.x -= 0.1;
-		if (m_velocity.x < 0)
-			m_velocity.x += 0.1;
-	}
-
-	if (m_force.y == 0)
-	{
-		if (m_velocity.y > 0)
-			m_velocity.y -= 0.1;
-		if (m_velocity.y < 0)
-			m_velocity.y += 0.1;
-	}
-	//~
-
 	if (m_velocity.magnitude() > m_velocityLimit)
 	{
 		m_velocity.normaliseDirect();
-		m_velocity *= m_velocityLimit;
+		m_velocity *= (float)m_velocityLimit;
 	}
 
-	Vector2 NewPos = (m_collider.GetMidPos() += (m_velocity * DeltaTime));
+	m_position += (m_velocity * DeltaTime);
 
 	//Limit Player movement to window size
-	float R = (m_collider.GetRadius() / 2);
+	float R = (m_radius / 2);
 
-	if (NewPos.y > 720 - R)
+	if (m_position.y > 720 - R)
 	{
-		NewPos.y -= 6;
-		m_velocity.y = 0;
+		m_position.y -= 6;
+		m_velocity.y = -m_velocity.y;
 	}
-	if (NewPos.y < 0 + R)
+	if (m_position.y < 0 + R)
 	{
-		NewPos.y += 6;
-		m_velocity.y = 0;
+		m_position.y += 6;
+		m_velocity.y = -m_velocity.y;
 	}
 	
-	if (NewPos.x > 1280 - R)
+	if (m_position.x > 1280 - R)
 	{
-		NewPos.x -= 6;
-		m_velocity.x = 0;
+		m_position.x -= 6;
+		m_velocity.x = -m_velocity.x;
 	}
-	if (NewPos.x < 0 + R)
+	if (m_position.x < 0 + R)
 	{
-		NewPos.x += 6;
-		m_velocity.x = 0;
+		m_position.x += 6;
+		m_velocity.x = -m_velocity.x;
 	}
 	//~
 
-	m_collider.SetMidPos(NewPos);
-	//~
+	//Check for any collisions and bounce
+	for (int i = 0; i < m_enemyList.size(); i++)
+	{
+		if (Collision(m_enemyList[i]) == true)
+			m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
+	}
+	//~~
 	
 	
 	//Count how much time has passed if counter is above 0 (Player has been hit), skips once each time the Player has been hit
@@ -100,27 +91,46 @@ void Player::Update(float DeltaTime)
 
 void Player::Draw(Renderer2D* renderer)
 {
-	Vector2 Pos = m_collider.GetMidPos();
-
 	//Draw sprite: if Player has been hit, the sprite drawn will switch between m_hitSprite and m_sprite every 0.4 seconds 5 times
 	if (m_flickerCounter == 1 || m_flickerCounter == 3 || m_flickerCounter == 5)
 	{
-		renderer->drawSprite(m_hitSprite, Pos.x, Pos.y, 44, 44);
+		renderer->drawSprite(m_hitSprite, m_position.x, m_position.y);
 
 		if (m_firstRound == true)
 			m_firstRound = false;
 	}
-	
+
+
 	else
-		renderer->drawSprite(m_sprite, Pos.x, Pos.y, 44, 44);
+		renderer->drawSprite(m_sprite, m_position.x, m_position.y);
 	//~
 
 
-	//If 0.4 or more seconds has passed since the last sprite switch, and there are still switches left, switch sprites
-	if (m_flickerTime >= 0.4 && m_flickerCounter > 0)
+	//If 0.1 or more seconds has passed since the last sprite switch, and there are still switches left, switch sprites
+	if (m_flickerTime >= 0.1 && m_flickerCounter > 0)
 	{
 		m_flickerTime = 0;
 		m_flickerCounter--;
 	}
 	//~
+}
+
+
+void Player::FindClosestEnemy(vector<Agent*> Enemies)
+{
+	float PreviousDistance = 999999;
+
+	for (int i = 0; i < Enemies.size(); i++)
+	{
+		Vector2 Pos = Enemies[i]->GetPos() - m_position;
+		float CurrentDistance = Pos.dot(Pos);
+
+		if (CurrentDistance < PreviousDistance)
+		{
+			m_target = Enemies[i];
+			PreviousDistance = CurrentDistance;
+		}
+	}
+
+	m_enemyList = Enemies;
 }

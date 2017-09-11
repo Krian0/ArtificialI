@@ -43,6 +43,12 @@
     <Filter Include="Source Files\FSM\States">
       <UniqueIdentifier>{667163fb-7b6b-4cb2-99d9-450c0e4d11dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Steering">
+      <UniqueIdentifier>{47981658-63b6-43bc-91c7-75fff6ad445a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Steering">
+      <UniqueIdentifier>{efd9a7bd-c8a3-41aa-92fe-a0cbbc784126}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -60,9 +66,6 @@
     <ClCompile Include="StateMachine.cpp">
       <Filter>Source Files\FSM</Filter>
     </ClCompile>
-    <ClCompile Include="Circle.cpp">
-      <Filter>Source Files\Etc</Filter>
-    </ClCompile>
     <ClCompile Include="AttackState.cpp">
       <Filter>Source Files\FSM\States</Filter>
     </ClCompile>
@@ -77,6 +80,15 @@
     </ClCompile>
     <ClCompile Include="ChaseState.cpp">
       <Filter>Source Files\FSM\States</Filter>
+    </ClCompile>
+    <ClCompile Include="FleeState.cpp">
+      <Filter>Source Files\FSM\States</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringBehaviour.cpp">
+      <Filter>Source Files\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekForce.cpp">
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +116,6 @@
     <ClInclude Include="StateMachine.h">
       <Filter>Header Files\FSM</Filter>
     </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>Header Files\Etc</Filter>
-    </ClInclude>
     <ClInclude Include="AttackState.h">
       <Filter>Header Files\FSM\States</Filter>
     </ClInclude>
@@ -115,6 +124,18 @@
     </ClInclude>
     <ClInclude Include="ChaseState.h">
       <Filter>Header Files\FSM\States</Filter>
+    </ClInclude>
+    <ClInclude Include="FleeState.h">
+      <Filter>Header Files\FSM\States</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringBehaviour.h">
+      <Filter>Header Files\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringForce.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekForce.h">
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

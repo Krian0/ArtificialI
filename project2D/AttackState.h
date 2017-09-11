@@ -1,8 +1,8 @@
 #pragma once
 #include "State.h"
 
-//Enemy will attack the Player and wait 1 second before deciding whether to attack again or change state.
-//Switches to Chase if Player is within sight-range but outside of attack-range, switches to Wander if Player is outside of sight-range. 
+//Enemy will attack the Player and wait 0.2 seconds before deciding whether to attack again or change state.
+//Switches to : Flee if the Enemy has been hit, Wander if Player is outside of sight-range, Chase if Player is within sight-range.
 class AttackState : public State
 {
 public:
@@ -14,6 +14,8 @@ public:
 	void Exit(Agent* An_Agent) override;
 
 private:
+
+	bool TargetIsInRange(Agent* An_Agent);
 
 	float	m_waitTimer;
 	bool	m_hasAttacked;

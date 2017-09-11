@@ -25,14 +25,19 @@ bool Application2D::startup()
 	m_states.push_back(new AttackState);
 	m_states.push_back(new WanderState);
 	m_states.push_back(new ChaseState);
+	m_states.push_back(new FleeState);
 
 	m_stateMap[ATTACK] = 0;
 	m_stateMap[WANDER] = 1;
 	m_stateMap[CHASE] = 2;
+	m_stateMap[FLEE] = 3;
 
+	m_enemySprite = new aie::Texture("./textures/ball_3.png");
 	m_hitSprite = new aie::Texture("./textures/ball.png");
 
-	m_player = new Player(nullptr, m_hitSprite, Vector2(500, 500), 44);
+	m_player = new Player(m_hitSprite, Vector2(500, 500), 22);
+
+	m_enemies.push_back(new Enemy(m_player, m_states, m_stateMap, m_enemySprite, m_hitSprite, Vector2(900, 500), 22));
 
 	return true;
 }
@@ -40,6 +45,11 @@ bool Application2D::startup()
 void Application2D::shutdown() 
 {
 	delete m_2dRenderer;
+	delete m_enemySprite;
+	delete m_hitSprite;
+
+	while (m_enemies.size() > 0)
+		m_enemies.pop_back();
 
 	while (m_states.size() > 0)
 		m_states.pop_back();
@@ -54,7 +64,11 @@ void Application2D::update(float deltaTime)
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
 
+	m_player->FindClosestEnemy(m_enemies);
 	m_player->Update(deltaTime);
+
+	for (auto iter = m_enemies.begin(); iter != m_enemies.end(); iter++)
+		(*iter)->Update(deltaTime);
 }
 
 void Application2D::draw() 
@@ -64,6 +78,9 @@ void Application2D::draw()
 	m_2dRenderer->begin();
 
 	m_player->Draw(m_2dRenderer);
+
+	for (auto iter = m_enemies.begin(); iter != m_enemies.end(); iter++)
+		(*iter)->Draw(m_2dRenderer);
 
 	m_2dRenderer->end();
 }

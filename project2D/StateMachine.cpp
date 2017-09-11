@@ -1,9 +1,12 @@
 #include "StateMachine.h"
 
-StateMachine::StateMachine(vector<State*> Available_States, map<StateEnum, int> State_Map)
+StateMachine::StateMachine(vector<State*> Available_States, map<StateEnum, int> State_Map, Agent* An_Agent)
 {
 	m_availableStates	= Available_States;
 	m_stateMap			= State_Map;
+
+	m_availableStates[m_stateMap.at(WANDER)]->Init(An_Agent);
+	m_currentState = m_availableStates[m_stateMap.at(WANDER)];
 }
 
 StateMachine::~StateMachine()

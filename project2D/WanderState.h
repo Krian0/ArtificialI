@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-//Enemy will wander in a random direction for 4 seconds, then pick a new direction.
-//Switches to Chase if Player is within sight-range.
+//Enemy will wander in a random direction for 0.2 seconds, then pick a new direction.
+//Switches to : Chase if Player is within sight-range.
 class WanderState : public State
 {
 public:
@@ -21,4 +21,8 @@ private:
 
 	Vector2 m_direction;
 	float m_timer;
+
+	//
+	float m_wanderRadius;
+	float m_wanderJitter;
 };
