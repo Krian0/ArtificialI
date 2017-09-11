@@ -6,8 +6,8 @@
 class AttackState : public State
 {
 public:
-	AttackState() {}
-	~AttackState() {}
+	AttackState();
+	~AttackState();
 
 	void Update(Agent* An_Agent, StateMachine* sm, float DeltaTime) override;
 	void Init(Agent* An_Agent) override;

@@ -6,8 +6,8 @@
 class ChaseState : public State
 {
 public:
-	ChaseState() {}
-	~ChaseState() {}
+	ChaseState();
+	~ChaseState();
 
 	void Update(Agent* An_Agent, StateMachine* sm, float DeltaTime) override;
 	void Init(Agent* An_Agent) override;

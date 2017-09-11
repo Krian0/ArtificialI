@@ -1,4 +1,16 @@
 #include "AttackState.h"
+#include "Agent.h"
+
+AttackState::AttackState()
+{
+
+}
+
+AttackState::~AttackState()
+{
+
+}
+
 
 void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
@@ -23,19 +35,19 @@ void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 		//Change state if the proper conditions are met
 		if (An_Agent->WasAttacked() == true)
 		{
-			sm->ChangeState(An_Agent, FLEE);
+			sm->ChangeState(An_Agent, StateEnum::FLEE);
 			return;
 		}
 
 		if (Distance > An_Agent->m_sightRange)
 		{
-			sm->ChangeState(An_Agent, WANDER);
+			sm->ChangeState(An_Agent, StateEnum::WANDER);
 			return;
 		}
 
 		else if (Distance <= An_Agent->m_sightRange)
 		{
-			sm->ChangeState(An_Agent, CHASE);
+			sm->ChangeState(An_Agent, StateEnum::CHASE);
 			return;
 		}
 		//~

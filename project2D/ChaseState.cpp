@@ -1,4 +1,16 @@
 #include "ChaseState.h"
+#include "Agent.h"
+
+ChaseState::ChaseState()
+{
+
+}
+
+ChaseState::~ChaseState()
+{
+
+}
+
 
 void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
@@ -12,27 +24,21 @@ void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 	//Change state if the proper conditions are met
 	if (Distance > An_Agent->m_sightRange)
 	{
-		sm->ChangeState(An_Agent, WANDER);
+		sm->ChangeState(An_Agent, StateEnum::WANDER);
 		return;
 	}
 
 	if (Distance <= An_Agent->m_attackRange)
-	{
-		sm->ChangeState(An_Agent, ATTACK);
-		return;
-	}
+		sm->ChangeState(An_Agent, StateEnum::ATTACK);
 	//~
 
 
-	//Otherwise, move enemy towards Player (continue to chase)
-	else
-		
-	//~
+	//Otherwise, continue to chase
 }
 
 void ChaseState::Init(Agent* An_Agent)
 {
-
+	//change steering
 }
 
 void ChaseState::Exit(Agent* An_Agent)

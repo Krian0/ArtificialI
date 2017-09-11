@@ -1,16 +1,16 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Agent* Target, vector<State*> States, map<StateEnum, int> State_Map, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position, float Radius)
+Enemy::Enemy(Agent* Target, vector<State*> States, vector<IBehaviour*> Behaviours, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position)
 {
-	m_stateMachine = new StateMachine(States, State_Map, this);
 	m_target = Target;
-
-	m_stateMachine->ChangeState(this, WANDER);
+	m_stateMachine = new StateMachine(States, this);
+	m_stateMachine->ChangeState(this, StateEnum::WANDER);
+	m_behaviours.push_back(Behaviours[(int)BehaviourEnum::STEERING]);
 
 	m_sprite = Sprite;
 	m_hitSprite = Hit_Sprite;
 	m_position = Position;
-	m_radius = Radius;
+	m_radius = 22;
 
 	m_flickerCounter = 0;
 	m_flickerTime = 0;
@@ -29,6 +29,9 @@ Enemy::~Enemy()
 void Enemy::Update(float DeltaTime)
 {
 	m_stateMachine->Update(this, DeltaTime);
+
+	for (auto iter = m_behaviours.begin(); iter != m_behaviours.end(); iter++)
+		(*iter)->Update(this, DeltaTime);
 
 	//Move
 	m_velocity += m_force * DeltaTime;

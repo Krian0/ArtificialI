@@ -1,15 +1,17 @@
 #include "Player.h"
 
-Player::Player(Texture* Hit_Sprite, Vector2 Position, float Radius)
+Player::Player(vector<IBehaviour*> Behaviours, Texture* Hit_Sprite, Vector2 Position)
 {
 	m_target	= NULL;
-	m_behaviours.push_back(new KeyboardController);
 	m_velocityLimit = 800;
+	m_behaviours.push_back(Behaviours[(int)BehaviourEnum::STEERING]);
+	m_behaviours.push_back(Behaviours[(int)BehaviourEnum::KEYBOARD]);
+
 
 	m_sprite	= new Texture("./textures/ball_2.png");
 	m_hitSprite	= Hit_Sprite;
 	m_position = Position;
-	m_radius = Radius;
+	m_radius = 22;
 
 	m_flickerCounter	= 0;
 	m_flickerTime		= 0;
@@ -23,8 +25,6 @@ Player::Player(Texture* Hit_Sprite, Vector2 Position, float Radius)
 Player::~Player()
 {
 	delete m_sprite;
-
-	m_behaviours.~vector();
 }
 
 
@@ -34,7 +34,7 @@ void Player::Update(float DeltaTime)
 	//Think
 	//Act
 	for (auto iter = m_behaviours.begin(); iter != m_behaviours.end(); iter++)
-		(*iter)->Update(this);
+		(*iter)->Update(this, DeltaTime);
 	//~
 
 	//Move
@@ -75,7 +75,7 @@ void Player::Update(float DeltaTime)
 	//~
 
 	//Check for any collisions and bounce
-	for (int i = 0; i < m_enemyList.size(); i++)
+	for (signed int i = 0; i < m_enemyList.size(); i++)
 	{
 		if (Collision(m_enemyList[i]) == true)
 			m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
@@ -120,7 +120,7 @@ void Player::FindClosestEnemy(vector<Agent*> Enemies)
 {
 	float PreviousDistance = 999999;
 
-	for (int i = 0; i < Enemies.size(); i++)
+	for (signed int i = 0; i < Enemies.size(); i++)
 	{
 		Vector2 Pos = Enemies[i]->GetPos() - m_position;
 		float CurrentDistance = Pos.dot(Pos);

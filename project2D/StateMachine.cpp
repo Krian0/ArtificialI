@@ -1,12 +1,12 @@
 #include "StateMachine.h"
+#include "Agent.h"
 
-StateMachine::StateMachine(vector<State*> Available_States, map<StateEnum, int> State_Map, Agent* An_Agent)
+StateMachine::StateMachine(vector<State*> Available_States, Agent* An_Agent)
 {
 	m_availableStates	= Available_States;
-	m_stateMap			= State_Map;
 
-	m_availableStates[m_stateMap.at(WANDER)]->Init(An_Agent);
-	m_currentState = m_availableStates[m_stateMap.at(WANDER)];
+	m_availableStates[(int)StateEnum::WANDER]->Init(An_Agent);
+	m_currentState = m_availableStates[(int)StateEnum::WANDER];
 }
 
 StateMachine::~StateMachine()
@@ -23,10 +23,10 @@ void StateMachine::Update(Agent* An_Agent, float DeltaTime)
 void StateMachine::ChangeState(Agent* An_Agent, StateEnum A_State)
 {
 	m_currentState->Exit(An_Agent);
-	m_availableStates[m_stateMap.at(A_State)]->Init(An_Agent);
+	m_availableStates[(int)A_State]->Init(An_Agent);
 
 	m_previousState = m_currentState;
-	m_currentState = m_availableStates[m_stateMap.at(A_State)];
+	m_currentState = m_availableStates[(int)A_State];
 }
 
 void StateMachine::ReturnToLastState()

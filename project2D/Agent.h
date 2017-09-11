@@ -2,6 +2,8 @@
 #include "Vector2.h"
 #include "Texture.h"
 #include "Renderer2D.h"
+#include "IBehaviour.h"
+#include "StateMachine.h"
 using aie::Texture;
 using aie::Renderer2D;
 
@@ -19,6 +21,7 @@ public:
 	void AddForce(Vector2 force);
 	//Makes the Agent's sprite flicker to a hit-sprite and back several times upon being hit
 	void OnHit();
+	//
 	void OnFlee();
 
 	//Returns variable matching the function name
@@ -26,6 +29,8 @@ public:
 	Vector2	GetTargetPos();
 	Vector2	GetPos();
 	Vector2 GetCurrentVelocity();
+	IBehaviour* GetBehaviour(int Index);
+
 
 	float	GetRadius();
 	bool	WasAttacked();
@@ -50,13 +55,16 @@ protected:
 	float	m_radius;
 
 	//Brain
+	StateMachine*		m_stateMachine;
+    vector<IBehaviour*> m_behaviours;
+
 	Agent*	m_target;
 
+	float	m_flickerTime;
+	int		m_flickerCounter;
+	bool	m_firstRound;
 	bool	m_wasAttacked;
 	bool	m_hitWall;
-	bool	m_firstRound;
-	int		m_flickerCounter;
-	float	m_flickerTime;
 
 private:
 

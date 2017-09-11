@@ -41,6 +41,11 @@ Vector2 Agent::GetCurrentVelocity()
 	return m_velocity;
 }
 
+IBehaviour* Agent::GetBehaviour(int Index)
+{
+	return m_behaviours.at(Index);
+}
+
 float Agent::GetRadius()
 {
 	return m_radius;

@@ -7,6 +7,7 @@
 #include "Matrix2.h"
 
 //
+#include "SteeringBehaviour.h"
 #include "AttackState.h"
 #include "WanderState.h"
 #include "ChaseState.h"
@@ -37,8 +38,8 @@ protected:
 	aie::Texture* m_enemySprite;
 	aie::Texture* m_hitSprite;
 
+	vector<IBehaviour*> m_behaviours;
 	vector<State*>		m_states;
-	map<StateEnum, int> m_stateMap;
 
 
 	Player* m_player;

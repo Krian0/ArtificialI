@@ -1,5 +1,7 @@
 #pragma once
-#include "Agent.h"
+#include "BehaviourEnum.h"
+
+class Agent;
 
 class IBehaviour
 {

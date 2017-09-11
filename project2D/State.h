@@ -1,7 +1,9 @@
 #pragma once
 #include "StateMachine.h"
+#include "Vector2.h"
 
 class StateMachine;
+class Agent;
 
 class State
 {

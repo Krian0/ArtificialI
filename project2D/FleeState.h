@@ -6,8 +6,8 @@
 class FleeState : public State
 {
 public:
-	FleeState() {}
-	~FleeState() {}
+	FleeState();
+	~FleeState();
 
 	void Update(Agent* An_Agent, StateMachine* sm, float DeltaTime) override;
 	void Init(Agent* An_Agent) override;

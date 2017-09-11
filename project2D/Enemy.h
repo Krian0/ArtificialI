@@ -1,10 +1,10 @@
 #pragma once
-#include "StateMachine.h"
+#include "Agent.h"
 
 class Enemy : public Agent
 {
 public:
-	Enemy(Agent* Target, vector<State*> States, map<StateEnum, int> State_Map, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position, float Radius);
+	Enemy(Agent* Target, vector<State*> States, vector<IBehaviour*> Behaviours, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position);
 	~Enemy();
 
 	void Update(float DeltaTime) override;
@@ -12,5 +12,4 @@ public:
 
 private:
 
-	StateMachine* m_stateMachine;
 };

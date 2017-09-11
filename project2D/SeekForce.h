@@ -1,7 +1,7 @@
 #pragma once
 #include "SteeringForce.h"
 
-class SeekForce : SteeringForce
+class SeekForce : public SteeringForce
 {
 public:
 	SeekForce();
