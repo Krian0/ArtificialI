@@ -1,7 +1,9 @@
 #pragma once
 #include "State.h"
 #include "StateEnum.h"
+#include <map>
 #include <vector>
+using std::map;
 using std::vector;
 
 class State;
@@ -10,17 +12,17 @@ class Agent;
 class StateMachine
 {
 public:
-	StateMachine(vector<State*> Available_States, Agent* An_Agent);
+	StateMachine(Agent* An_Agent, map<StateE, State*> Available_States, StateE Start_State);
 	~StateMachine();
 
 	void Update(Agent* An_Agent, float DeltaTime);
-	void ChangeState(Agent* An_Agent, StateEnum A_State);
+	void ChangeState(Agent* An_Agent, StateE A_State);
 	void ReturnToLastState();
 
 	State* GetCurrentState();
 	State* GetPrevState();
 
-	vector<State*>		m_availableStates;
+	map<StateE, State*>	m_availableStates;
 
 private:
 	State* m_currentState;

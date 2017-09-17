@@ -1,21 +1,23 @@
 #include "FleeState.h"
+#include "SteeringBehaviour.h"
+#include "FleeForce.h"
 #include "Agent.h"
 
 FleeState::FleeState()
 {
-
+	m_flee = new FleeForce;
 }
 
 FleeState::~FleeState()
 {
-
+	delete m_flee;
 }
 
 
 void FleeState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
 	//Work out the distance from Enemy to Player
-	Vector2 TargetPos = An_Agent->GetTargetPos();
+	Vector2 TargetPos = An_Agent->GetTargets()[0]->GetPos();
 	Vector2 AgentPos = An_Agent->GetPos();
 	float Distance = (AgentPos - TargetPos).magnitude();
 	//~
@@ -23,7 +25,7 @@ void FleeState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 	//Change state if the proper conditions are met
 	if (Distance > An_Agent->m_sightRange * 2)
-		sm->ChangeState(An_Agent, StateEnum::WANDER);
+		sm->ChangeState(An_Agent, StateE::WANDER);
 	//~
 
 
@@ -33,7 +35,8 @@ void FleeState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 void FleeState::Init(Agent* An_Agent)
 {
 	An_Agent->OnFlee();
-	//Change Steering
+	auto Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour(BehaviourE::STEERING));
+	Steering->m_steeringForce = m_flee;
 }
 
 void FleeState::Exit(Agent* An_Agent)

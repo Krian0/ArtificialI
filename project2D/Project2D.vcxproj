@@ -97,7 +97,6 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FleeForce.cpp" />
     <ClCompile Include="FleeState.cpp" />
-    <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="KeyboardForce.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -117,7 +116,6 @@
     <ClInclude Include="FleeForce.h" />
     <ClInclude Include="FleeState.h" />
     <ClInclude Include="IBehaviour.h" />
-    <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="KeyboardForce.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeekForce.h" />

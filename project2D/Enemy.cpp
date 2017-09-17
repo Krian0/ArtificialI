@@ -1,11 +1,10 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Agent* Target, vector<State*> States, vector<IBehaviour*> Behaviours, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position)
+Enemy::Enemy(Agent* Target, map<StateE, State*> States, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position)
 {
-	m_target = Target;
-	m_stateMachine = new StateMachine(States, this);
-	m_stateMachine->ChangeState(this, StateEnum::WANDER);
-	m_behaviours.push_back(Behaviours[(int)BehaviourEnum::STEERING]);
+	m_targets.push_back(Target);
+	m_behaviours[BehaviourE::STEERING] = new SteeringBehaviour;
+	m_stateMachine = new StateMachine(this, States, StateE::WANDER);
 
 	m_sprite = Sprite;
 	m_hitSprite = Hit_Sprite;
@@ -19,19 +18,22 @@ Enemy::Enemy(Agent* Target, vector<State*> States, vector<IBehaviour*> Behaviour
 	m_sightRange = 250;
 	m_attackRange = 50;
 	m_velocityLimit = 480;
+
+	m_isPlayer = false;
 }
 
 Enemy::~Enemy()
 {
 	delete m_stateMachine;
+	m_behaviours.clear();
 }
 
 void Enemy::Update(float DeltaTime)
 {
 	m_stateMachine->Update(this, DeltaTime);
 
-	for (auto iter = m_behaviours.begin(); iter != m_behaviours.end(); iter++)
-		(*iter)->Update(this, DeltaTime);
+	for (unsigned int i = 0; i < m_behaviours.size(); i++)
+		m_behaviours.at(BehaviourE(i))->Update(this, DeltaTime);
 
 	//Move
 	m_velocity += m_force * DeltaTime;
@@ -46,37 +48,34 @@ void Enemy::Update(float DeltaTime)
 
 	//Limit Enemy movement to window size
 	float R = (m_radius / 2);
+	float D = 1.8;
 	float PushDistance = 14;
 
 	if (m_position.y > 720 - R)
 	{
 		m_position.y -= PushDistance;
-		m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
-		m_hitWall = true;
+		m_velocity.y = -m_velocity.y / D;
 	}
 	if (m_position.y < 0 + R)
 	{
 		m_position.y += PushDistance;
-		m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
-		m_hitWall = true;
+		m_velocity.y = -m_velocity.y / D;
 	}
 
 	if (m_position.x > 1280 - R)
 	{
 		m_position.x -= PushDistance;
-		m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
-		m_hitWall = true;
+		m_velocity.x = -m_velocity.x / D;
 	}
 	if (m_position.x < 0 + R)
 	{
 		m_position.x += PushDistance;
-		m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
-		m_hitWall = true;
+		m_velocity.x = -m_velocity.x / D;
 	}
 	//~
 
 	//Check for any collisions and bounce
-		if (Collision(m_target) == true)
+		if (IsColliding(m_targets[0]) == true)
 			m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
 	//~~
 

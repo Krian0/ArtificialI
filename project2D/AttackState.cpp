@@ -1,23 +1,29 @@
 #include "AttackState.h"
+#include "SteeringBehaviour.h"
+#include "KeyboardForce.h"
 #include "Agent.h"
 
 AttackState::AttackState()
 {
-
+	m_keyboard = new KeyboardForce;
 }
 
 AttackState::~AttackState()
 {
-
+	delete m_keyboard;
 }
 
 
 void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
-	//Attack Player only once
-	if (m_hasAttacked == false && TargetIsInRange(An_Agent) == true)
+	vector<Agent*> TargetsInRange = SortTargets(An_Agent, An_Agent->GetTargets());
+
+	//Attack any target Agents in range
+	if (m_hasAttacked == false && TargetsInRange.size() > 0)
 	{
-		An_Agent->GetTarget()->OnHit();
+		for (unsigned int i = 0; i < TargetsInRange.size(); i++)
+			TargetsInRange[i]->OnHit();
+		
 		m_hasAttacked = true;
 	}
 	//~
@@ -28,45 +34,51 @@ void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 	if (m_waitTimer <= 0)
 	{
-		//Work out the distance from Enemy to Player
-		float Distance = (An_Agent->GetPos() - An_Agent->GetTargetPos()).magnitude();
-		//~
-
-		//Change state if the proper conditions are met
-		if (An_Agent->WasAttacked() == true)
+		if (An_Agent->IsAgentPlayer() == false)
 		{
-			sm->ChangeState(An_Agent, StateEnum::FLEE);
-			return;
-		}
+			//Work out the distance between Agents
+			float Distance = (An_Agent->GetPos() - An_Agent->GetTargets()[0]->GetPos()).magnitude();
+			//~
 
-		if (Distance > An_Agent->m_sightRange)
-		{
-			sm->ChangeState(An_Agent, StateEnum::WANDER);
-			return;
-		}
+			//Change state if the proper conditions are met
+			if (An_Agent->WasAttacked() == true)
+			{
+				sm->ChangeState(An_Agent, StateE::FLEE);
+				return;
+			}
 
-		else if (Distance <= An_Agent->m_sightRange)
-		{
-			sm->ChangeState(An_Agent, StateEnum::CHASE);
-			return;
-		}
-		//~
+			if (Distance > An_Agent->m_sightRange)
+			{
+				sm->ChangeState(An_Agent, StateE::WANDER);
+				return;
+			}
 
+			if (Distance <= An_Agent->m_sightRange)
+			{
+				sm->ChangeState(An_Agent, StateE::CHASE);
+				return;
+			}
+			//~
+		}
 
 		//Otherwise, reset the wait timer and set has attacked to false (attack again)
-		else
-		{
-			m_waitTimer = 0.2;
-			m_hasAttacked = false;
-		}
+		m_waitTimer = 0.2f;
+		m_hasAttacked = false;
+		//~	
 	}
 	//~
 }
 
 void AttackState::Init(Agent* An_Agent)
 {
-	m_waitTimer = 0.2;
+	m_waitTimer = 0.2f;
 	m_hasAttacked = false;
+
+	if (An_Agent->IsAgentPlayer() == true)
+	{
+		SteeringBehaviour* Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour(BehaviourE::STEERING));
+		Steering->m_steeringForce = m_keyboard;
+	}
 }
 
 void AttackState::Exit(Agent* An_Agent)
@@ -75,17 +87,22 @@ void AttackState::Exit(Agent* An_Agent)
 }
 
 
-bool AttackState::TargetIsInRange(Agent* An_Agent)
+vector<Agent*> AttackState::SortTargets(Agent* An_Agent, vector<Agent*> Targets)
 {
-	Vector2 Pos = An_Agent->GetTargetPos() - An_Agent->GetPos();
+	vector<Agent*> TargetsInRange;
 
-	float TargetRadius = An_Agent->GetTarget()->GetRadius();
-	float CombinedRadiiSquared = (An_Agent->m_attackRange + TargetRadius) * (An_Agent->m_attackRange + TargetRadius);
+	for (unsigned int i = 0; i < Targets.size(); i++)
+	{
+		Vector2 Pos = Targets[i]->GetPos() - An_Agent->GetPos();
 
-	bool ThereIsAnOverlap = false;
+		float TargetRadius = Targets[i]->GetRadius();
+		float CombinedRadiiSquared = (An_Agent->m_attackRange + TargetRadius) * (An_Agent->m_attackRange + TargetRadius);
 
-	if (Pos.dot(Pos) <= CombinedRadiiSquared)
-		ThereIsAnOverlap = true;
+		//Check if any target Agents are within range, and add them to the TargetsInRange vector if they are
+		if (Pos.dot(Pos) <= CombinedRadiiSquared)
+			TargetsInRange.push_back(Targets[i]);
+		//~
+	}
 
-	return ThereIsAnOverlap;
+	return TargetsInRange;
 }

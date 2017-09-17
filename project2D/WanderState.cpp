@@ -17,13 +17,13 @@ WanderState::~WanderState()
 void WanderState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
 	//Work out the distance from Enemy to Player
-	float Distance = (An_Agent->GetPos() - An_Agent->GetTargetPos()).magnitude();
+	float Distance = (An_Agent->GetPos() - An_Agent->GetTargets()[0]->GetPos()).magnitude();
 	//~
 
 	//Change state if the proper conditions are met
 	if (Distance <= An_Agent->m_sightRange)
 	{
-		sm->ChangeState(An_Agent, StateEnum::CHASE);
+		sm->ChangeState(An_Agent, StateE::CHASE);
 		return;
 	}
 	//~
@@ -33,7 +33,7 @@ void WanderState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 void WanderState::Init(Agent* An_Agent)
 {
-	auto Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour((int)BehaviourEnum::STEERING));
+	auto Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour(BehaviourE::STEERING));
 	Steering->m_steeringForce = m_wander;
 }
 

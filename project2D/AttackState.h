@@ -1,7 +1,9 @@
 #pragma once
 #include "State.h"
 
-//Enemy will attack the Player and wait 0.2 seconds before deciding whether to attack again or change state.
+class KeyboardForce;
+
+//Agent will attack any targets in range and wait 0.2 seconds before deciding whether to attack again or change state.
 //Switches to : Flee if the Enemy has been hit, Wander if Player is outside of sight-range, Chase if Player is within sight-range.
 class AttackState : public State
 {
@@ -15,7 +17,9 @@ public:
 
 private:
 
-	bool TargetIsInRange(Agent* An_Agent);
+	vector<Agent*> SortTargets(Agent* An_Agent, vector<Agent*> Targets);
+
+	KeyboardForce* m_keyboard;
 
 	float	m_waitTimer;
 	bool	m_hasAttacked;

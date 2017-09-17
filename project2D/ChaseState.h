@@ -1,6 +1,8 @@
 #pragma once
 #include "State.h"
 
+class SeekForce;
+
 //Enemy will chase the Player until conditions to change state are met.
 //Switches to : Wander if the Player is outside of sight-range, Attack if the Player is within attack-range.
 class ChaseState : public State
@@ -14,5 +16,7 @@ public:
 	void Exit(Agent* An_Agent) override;
 
 private:
+
+	SeekForce* m_seek;
 
 };

@@ -25,17 +25,16 @@ public:
 	void OnFlee();
 
 	//Returns variable matching the function name
-	Agent*	GetTarget();
-	Vector2	GetTargetPos();
+	IBehaviour*		GetBehaviour(BehaviourE Index);
+	vector<Agent*>	GetTargets();
+
 	Vector2	GetPos();
 	Vector2 GetCurrentVelocity();
-	IBehaviour* GetBehaviour(int Index);
-
 
 	float	GetRadius();
 	bool	WasAttacked();
-	bool	HasHitWall();
-	bool	Collision(Agent* The_Target);
+	bool	IsAgentPlayer();
+	bool	IsColliding(Agent* The_Target);
 	//~
 
 	int m_sightRange;
@@ -55,16 +54,17 @@ protected:
 	float	m_radius;
 
 	//Brain
-	StateMachine*		m_stateMachine;
-    vector<IBehaviour*> m_behaviours;
+	map<BehaviourE, IBehaviour*> m_behaviours;
+	StateMachine* m_stateMachine;
 
-	Agent*	m_target;
+	vector<Agent*>	m_targets;
 
 	float	m_flickerTime;
 	int		m_flickerCounter;
 	bool	m_firstRound;
 	bool	m_wasAttacked;
-	bool	m_hitWall;
+	//bool	m_hitWall;
+	bool	m_isPlayer;
 
 private:
 

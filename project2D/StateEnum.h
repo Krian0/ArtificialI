@@ -1,5 +1,5 @@
 #pragma once
-enum class StateEnum
+enum class StateE
 {
 	ATTACK = 0,
 	WANDER,

@@ -1,6 +1,8 @@
 #pragma once
 #include "State.h"
 
+class FleeForce;
+
 //Enemy will flee from the Player after being hit until conditions to change state are met.
 //Switches to Wander if the Player is outside of sight-range.
 class FleeState : public State
@@ -14,5 +16,7 @@ public:
 	void Exit(Agent* An_Agent) override;
 
 private:
+
+	FleeForce* m_flee;
 
 };

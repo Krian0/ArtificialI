@@ -1,11 +1,12 @@
 #include "Player.h"
 
-Player::Player(vector<IBehaviour*> Behaviours, Texture* Hit_Sprite, Vector2 Position)
+Player::Player(map<StateE, State*> States, Texture* Hit_Sprite, Vector2 Position)
 {
-	m_target	= NULL;
+	m_isPlayer = true;
+
 	m_velocityLimit = 800;
-	m_behaviours.push_back(Behaviours[(int)BehaviourEnum::STEERING]);
-	m_behaviours.push_back(Behaviours[(int)BehaviourEnum::KEYBOARD]);
+	m_behaviours[BehaviourE::STEERING] = new SteeringBehaviour;
+	m_stateMachine = new StateMachine(this, States, StateE::ATTACK);
 
 
 	m_sprite	= new Texture("./textures/ball_2.png");
@@ -25,6 +26,8 @@ Player::Player(vector<IBehaviour*> Behaviours, Texture* Hit_Sprite, Vector2 Posi
 Player::~Player()
 {
 	delete m_sprite;
+	delete m_stateMachine;
+	m_behaviours.clear();
 }
 
 
@@ -32,9 +35,10 @@ void Player::Update(float DeltaTime)
 {
 	//Sense
 	//Think
+	m_stateMachine->Update(this, DeltaTime);
 	//Act
-	for (auto iter = m_behaviours.begin(); iter != m_behaviours.end(); iter++)
-		(*iter)->Update(this, DeltaTime);
+	for (unsigned int i = 0; i < m_behaviours.size(); i++)
+		m_behaviours.at(BehaviourE(i))->Update(this, DeltaTime);
 	//~
 
 	//Move
@@ -50,34 +54,36 @@ void Player::Update(float DeltaTime)
 
 	//Limit Player movement to window size
 	float R = (m_radius / 2);
+	float D = 1.7;
+	int PushDistance = 4;
 
 	if (m_position.y > 720 - R)
 	{
-		m_position.y -= 6;
-		m_velocity.y = -m_velocity.y;
+		m_position.y -= PushDistance;
+		m_velocity.y = -m_velocity.y / D;
 	}
 	if (m_position.y < 0 + R)
 	{
-		m_position.y += 6;
-		m_velocity.y = -m_velocity.y;
+		m_position.y += PushDistance;
+		m_velocity.y = -m_velocity.y / D;
 	}
 	
 	if (m_position.x > 1280 - R)
 	{
-		m_position.x -= 6;
-		m_velocity.x = -m_velocity.x;
+		m_position.x -= PushDistance;
+		m_velocity.x = -m_velocity.x / D;
 	}
 	if (m_position.x < 0 + R)
 	{
-		m_position.x += 6;
-		m_velocity.x = -m_velocity.x;
+		m_position.x += PushDistance;
+		m_velocity.x = -m_velocity.x / D;
 	}
 	//~
 
 	//Check for any collisions and bounce
-	for (signed int i = 0; i < m_enemyList.size(); i++)
+	for (unsigned int i = 0; i < m_targets.size(); i++)
 	{
-		if (Collision(m_enemyList[i]) == true)
+		if (IsColliding(m_targets[i]) == true)
 			m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
 	}
 	//~~
@@ -116,21 +122,7 @@ void Player::Draw(Renderer2D* renderer)
 }
 
 
-void Player::FindClosestEnemy(vector<Agent*> Enemies)
+void Player::SetTargetList(vector<Agent*> Enemies)
 {
-	float PreviousDistance = 999999;
-
-	for (signed int i = 0; i < Enemies.size(); i++)
-	{
-		Vector2 Pos = Enemies[i]->GetPos() - m_position;
-		float CurrentDistance = Pos.dot(Pos);
-
-		if (CurrentDistance < PreviousDistance)
-		{
-			m_target = Enemies[i];
-			PreviousDistance = CurrentDistance;
-		}
-	}
-
-	m_enemyList = Enemies;
+	m_targets = Enemies;
 }

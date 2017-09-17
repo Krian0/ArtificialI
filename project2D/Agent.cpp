@@ -21,14 +21,14 @@ void Agent::OnFlee()
 
 
 //Get Functions
-Agent* Agent::GetTarget()
+IBehaviour* Agent::GetBehaviour(BehaviourE Index)
 {
-	return m_target;
+	return m_behaviours[Index];
 }
 
-Vector2 Agent::GetTargetPos()
+vector<Agent*> Agent::GetTargets()
 {
-	return m_target->GetPos();
+	return m_targets;
 }
 
 Vector2 Agent::GetPos()
@@ -41,11 +41,6 @@ Vector2 Agent::GetCurrentVelocity()
 	return m_velocity;
 }
 
-IBehaviour* Agent::GetBehaviour(int Index)
-{
-	return m_behaviours.at(Index);
-}
-
 float Agent::GetRadius()
 {
 	return m_radius;
@@ -56,12 +51,12 @@ bool Agent::WasAttacked()
 	return m_wasAttacked;
 }
 
-bool Agent::HasHitWall()
+bool Agent::IsAgentPlayer()
 {
-	return m_hitWall;
+	return m_isPlayer;
 }
 
-bool Agent::Collision(Agent* The_Target)
+bool Agent::IsColliding(Agent* The_Target)
 {
 	Vector2 TargetPos = The_Target->GetPos();
 	Vector2 Pos = TargetPos - m_position;

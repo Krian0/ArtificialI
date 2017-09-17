@@ -1,7 +1,6 @@
 #pragma once
-enum  class BehaviourEnum
+enum class BehaviourE
 {
 	STEERING = 0,
-	KEYBOARD,
 	END
 };

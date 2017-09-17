@@ -38,8 +38,7 @@ protected:
 	aie::Texture* m_enemySprite;
 	aie::Texture* m_hitSprite;
 
-	vector<IBehaviour*> m_behaviours;
-	vector<State*>		m_states;
+	map<StateE, State*> m_states;
 
 
 	Player* m_player;
