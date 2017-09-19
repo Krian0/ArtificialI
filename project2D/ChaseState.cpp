@@ -40,11 +40,10 @@ void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 void ChaseState::Init(Agent* An_Agent)
 {
-	auto Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour(BehaviourE::STEERING));
-	Steering->m_steeringForce = m_seek;
+	An_Agent->AddSteering(SteeringE::SEEK, m_seek);
 }
 
 void ChaseState::Exit(Agent* An_Agent)
 {
-
+	An_Agent->RemoveSteering(SteeringE::SEEK);
 }

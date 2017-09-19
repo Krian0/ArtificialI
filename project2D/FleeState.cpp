@@ -35,11 +35,10 @@ void FleeState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 void FleeState::Init(Agent* An_Agent)
 {
 	An_Agent->OnFlee();
-	auto Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour(BehaviourE::STEERING));
-	Steering->m_steeringForce = m_flee;
+	An_Agent->AddSteering(SteeringE::FLEE, m_flee);
 }
 
 void FleeState::Exit(Agent* An_Agent)
 {
-
+	An_Agent->RemoveSteering(SteeringE::FLEE);
 }

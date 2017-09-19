@@ -9,8 +9,10 @@ public:
 	~SteeringBehaviour();
 
 	void Update(Agent* An_Agent, float DeltaTime) override;
+	void AddSteering(SteeringE Steering_Enum, SteeringForce* Steering_Force);
+	void RemoveSteering(SteeringE Steering_Enum);
 
-	SteeringForce* m_steeringForce;
+	map<SteeringE, SteeringForce*> m_steeringForce;
 
 private:
 

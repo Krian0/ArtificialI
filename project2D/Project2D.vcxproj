@@ -95,6 +95,7 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="ChaseState.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EvadeForce.cpp" />
     <ClCompile Include="FleeForce.cpp" />
     <ClCompile Include="FleeState.cpp" />
     <ClCompile Include="KeyboardForce.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="SeekForce.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="SteeringBehaviour.cpp" />
+    <ClCompile Include="SteeringForce.cpp" />
     <ClCompile Include="WanderForce.cpp" />
     <ClCompile Include="WanderState.cpp" />
   </ItemGroup>
@@ -113,6 +115,7 @@
     <ClInclude Include="BehaviourEnum.h" />
     <ClInclude Include="ChaseState.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EvadeForce.h" />
     <ClInclude Include="FleeForce.h" />
     <ClInclude Include="FleeState.h" />
     <ClInclude Include="IBehaviour.h" />

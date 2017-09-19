@@ -75,15 +75,12 @@ void AttackState::Init(Agent* An_Agent)
 	m_hasAttacked = false;
 
 	if (An_Agent->IsAgentPlayer() == true)
-	{
-		SteeringBehaviour* Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour(BehaviourE::STEERING));
-		Steering->m_steeringForce = m_keyboard;
-	}
+		An_Agent->AddSteering(SteeringE::KEYBOARD, m_keyboard);
 }
 
 void AttackState::Exit(Agent* An_Agent)
 {
-
+	An_Agent->RemoveSteering(SteeringE::KEYBOARD);
 }
 
 

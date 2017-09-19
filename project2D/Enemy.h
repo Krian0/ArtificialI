@@ -5,7 +5,7 @@
 class Enemy : public Agent
 {
 public:
-	Enemy(Agent* Target, map<StateE, State*> States, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position);
+	Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position);
 	~Enemy();
 
 	void Update(float DeltaTime) override;

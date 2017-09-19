@@ -1,16 +1,19 @@
 #include "WanderState.h"
 #include "SteeringBehaviour.h"
 #include "WanderForce.h"
+#include "EvadeForce.h"
 #include "Agent.h"
 
 WanderState::WanderState() 
 {
 	m_wander = new WanderForce;
+	m_evade = new EvadeForce;
 }
 
 WanderState::~WanderState() 
 {
 	delete m_wander;
+	delete m_evade;
 }
 
 
@@ -33,11 +36,11 @@ void WanderState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 void WanderState::Init(Agent* An_Agent)
 {
-	auto Steering = dynamic_cast<SteeringBehaviour*>(An_Agent->GetBehaviour(BehaviourE::STEERING));
-	Steering->m_steeringForce = m_wander;
+	An_Agent->AddSteering(SteeringE::WANDER, m_wander);
+	An_Agent->AddSteering(SteeringE::EVADE, m_evade);
 }
 
 void WanderState::Exit(Agent* An_Agent)
 {
-
+	An_Agent->RemoveSteering(SteeringE::WANDER);
 }

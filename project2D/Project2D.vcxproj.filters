@@ -49,6 +49,18 @@
     <Filter Include="Source Files\Steering">
       <UniqueIdentifier>{efd9a7bd-c8a3-41aa-92fe-a0cbbc784126}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Steering\Forces">
+      <UniqueIdentifier>{f16dc827-1e05-4bb6-8f00-d60930387557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities\Agents">
+      <UniqueIdentifier>{1631afba-768e-47c8-9339-6b9470d1dc86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities\Agents">
+      <UniqueIdentifier>{458b20e9-612a-4cf2-a766-5ce49d058200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Steering\Forces">
+      <UniqueIdentifier>{15353768-feba-41d5-a811-6674f9f692a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -69,12 +81,6 @@
     <ClCompile Include="WanderState.cpp">
       <Filter>Source Files\FSM\States</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="ChaseState.cpp">
       <Filter>Source Files\FSM\States</Filter>
     </ClCompile>
@@ -84,16 +90,28 @@
     <ClCompile Include="SteeringBehaviour.cpp">
       <Filter>Source Files\Behaviour</Filter>
     </ClCompile>
-    <ClCompile Include="SeekForce.cpp">
-      <Filter>Source Files\Steering</Filter>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Entities\Agents</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Entities\Agents</Filter>
     </ClCompile>
     <ClCompile Include="FleeForce.cpp">
-      <Filter>Source Files\Steering</Filter>
-    </ClCompile>
-    <ClCompile Include="WanderForce.cpp">
-      <Filter>Source Files\Steering</Filter>
+      <Filter>Source Files\Steering\Forces</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardForce.cpp">
+      <Filter>Source Files\Steering\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekForce.cpp">
+      <Filter>Source Files\Steering\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="WanderForce.cpp">
+      <Filter>Source Files\Steering\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="EvadeForce.cpp">
+      <Filter>Source Files\Steering\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringForce.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
   </ItemGroup>
@@ -106,12 +124,6 @@
     </ClInclude>
     <ClInclude Include="IBehaviour.h">
       <Filter>Header Files\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Header Files\Entities</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files\FSM</Filter>
@@ -137,23 +149,32 @@
     <ClInclude Include="SteeringForce.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
-    <ClInclude Include="SeekForce.h">
-      <Filter>Header Files\Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="FleeForce.h">
-      <Filter>Header Files\Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="WanderForce.h">
-      <Filter>Header Files\Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardForce.h">
-      <Filter>Header Files\Steering</Filter>
-    </ClInclude>
     <ClInclude Include="StateEnum.h">
       <Filter>Header Files\Etc</Filter>
     </ClInclude>
     <ClInclude Include="BehaviourEnum.h">
       <Filter>Header Files\Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="FleeForce.h">
+      <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardForce.h">
+      <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekForce.h">
+      <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="WanderForce.h">
+      <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Entities\Agents</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Entities\Agents</Filter>
+    </ClInclude>
+    <ClInclude Include="EvadeForce.h">
+      <Filter>Header Files\Steering\Forces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

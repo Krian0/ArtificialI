@@ -22,18 +22,27 @@ bool Application2D::startup()
 	m_cameraY = 0;
 	m_timer = 0;
 
-	m_states[StateE::ATTACK]	= new AttackState;
-	m_states[StateE::WANDER]	= new WanderState;
-	m_states[StateE::CHASE]		= new ChaseState;
-	m_states[StateE::FLEE]		= new FleeState;
-
 	m_enemySprite = new aie::Texture("./textures/ball_3.png");
 	m_hitSprite = new aie::Texture("./textures/ball.png");
 
-	m_player = new Player(m_states, m_hitSprite, Vector2(500, 500));
-	m_enemies.push_back(new Enemy(m_player, m_states, m_enemySprite, m_hitSprite, Vector2(900, 500)));
+	m_player = new Player(m_hitSprite, Vector2(200, 200));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(900, 700)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(900, 600)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(900, 500)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 700)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 600)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 500)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(700, 700)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(700, 600)));
+	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(700, 500)));
 
 	m_player->SetTargetList(m_enemies);
+	for (unsigned int i = 0; i < m_enemies.size(); i++)
+	{
+		for (unsigned int e = 0; e < m_enemies.size(); e++)
+			if (e != i)
+				m_enemies[i]->AddFriendToList(m_enemies[e]);
+	}
 
 	return true;
 }
@@ -46,8 +55,6 @@ void Application2D::shutdown()
 
 	delete m_player;
 	m_enemies.clear();
-
-	m_states.clear();
 }
 
 void Application2D::update(float deltaTime) 

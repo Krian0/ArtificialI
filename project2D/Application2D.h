@@ -38,10 +38,7 @@ protected:
 	aie::Texture* m_enemySprite;
 	aie::Texture* m_hitSprite;
 
-	map<StateE, State*> m_states;
 
-
-	Player* m_player;
-
-	vector<Agent*> m_enemies;
+	Player*			m_player;
+	vector<Agent*>	m_enemies;
 };

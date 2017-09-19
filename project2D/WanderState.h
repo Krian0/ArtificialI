@@ -4,6 +4,7 @@
 #include <time.h>
 
 class WanderForce;
+class EvadeForce;
 
 //Enemy will wander in a random direction.
 //Switches to : Chase if Player is within sight-range.
@@ -20,5 +21,6 @@ public:
 private:
 
 	WanderForce* m_wander;
+	EvadeForce*  m_evade;
 
 };

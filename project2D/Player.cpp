@@ -1,18 +1,18 @@
 #include "Player.h"
 
-Player::Player(map<StateE, State*> States, Texture* Hit_Sprite, Vector2 Position)
+Player::Player(Texture* Hit_Sprite, Vector2 Position)
 {
 	m_isPlayer = true;
 
 	m_velocityLimit = 800;
 	m_behaviours[BehaviourE::STEERING] = new SteeringBehaviour;
-	m_stateMachine = new StateMachine(this, States, StateE::ATTACK);
+	m_stateMachine = new StateMachine(this, StateE::ATTACK);
 
 
 	m_sprite	= new Texture("./textures/ball_2.png");
 	m_hitSprite	= Hit_Sprite;
 	m_position = Position;
-	m_radius = 22;
+	m_radius = 16;
 
 	m_flickerCounter	= 0;
 	m_flickerTime		= 0;
@@ -33,13 +33,10 @@ Player::~Player()
 
 void Player::Update(float DeltaTime)
 {
-	//Sense
-	//Think
 	m_stateMachine->Update(this, DeltaTime);
-	//Act
+
 	for (unsigned int i = 0; i < m_behaviours.size(); i++)
 		m_behaviours.at(BehaviourE(i))->Update(this, DeltaTime);
-	//~
 
 	//Move
 	m_velocity += m_force * DeltaTime;
@@ -54,7 +51,7 @@ void Player::Update(float DeltaTime)
 
 	//Limit Player movement to window size
 	float R = (m_radius / 2);
-	float D = 1.7;
+	float D = 1.7f;
 	int PushDistance = 4;
 
 	if (m_position.y > 720 - R)
@@ -100,7 +97,7 @@ void Player::Draw(Renderer2D* renderer)
 	//Draw sprite: if Player has been hit, the sprite drawn will switch between m_hitSprite and m_sprite every 0.4 seconds 5 times
 	if (m_flickerCounter == 1 || m_flickerCounter == 3 || m_flickerCounter == 5)
 	{
-		renderer->drawSprite(m_hitSprite, m_position.x, m_position.y);
+		renderer->drawSprite(m_hitSprite, m_position.x, m_position.y, m_radius * 2, m_radius * 2);
 
 		if (m_firstRound == true)
 			m_firstRound = false;
@@ -108,7 +105,7 @@ void Player::Draw(Renderer2D* renderer)
 
 
 	else
-		renderer->drawSprite(m_sprite, m_position.x, m_position.y);
+		renderer->drawSprite(m_sprite, m_position.x, m_position.y, m_radius * 2, m_radius * 2);
 	//~
 
 
@@ -119,10 +116,4 @@ void Player::Draw(Renderer2D* renderer)
 		m_flickerCounter--;
 	}
 	//~
-}
-
-
-void Player::SetTargetList(vector<Agent*> Enemies)
-{
-	m_targets = Enemies;
 }

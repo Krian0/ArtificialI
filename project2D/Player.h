@@ -7,13 +7,13 @@ using std::vector;
 class Player : public Agent
 {
 public:
-	Player(map<StateE, State*> States, Texture* Hit_Sprite, Vector2 Position);
+	Player(Texture* Hit_Sprite, Vector2 Position);
 	~Player();
 
 	void Update(float DeltaTime) override;
 	void Draw(Renderer2D* renderer) override;
 
-	void SetTargetList(vector<Agent*> Enemies);
+	
 
 private:
 

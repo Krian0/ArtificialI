@@ -1,15 +1,15 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Agent* Target, map<StateE, State*> States, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position)
+Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position)
 {
 	m_targets.push_back(Target);
 	m_behaviours[BehaviourE::STEERING] = new SteeringBehaviour;
-	m_stateMachine = new StateMachine(this, States, StateE::WANDER);
+	m_stateMachine = new StateMachine(this, StateE::WANDER);
 
 	m_sprite = Sprite;
 	m_hitSprite = Hit_Sprite;
 	m_position = Position;
-	m_radius = 22;
+	m_radius = 10;
 
 	m_flickerCounter = 0;
 	m_flickerTime = 0;
@@ -44,11 +44,13 @@ void Enemy::Update(float DeltaTime)
 		m_velocity *= (float)m_velocityLimit;
 	}
 
+	m_velocity -= m_velocity / 10;
+
 	m_position += m_velocity * DeltaTime;
 
 	//Limit Enemy movement to window size
 	float R = (m_radius / 2);
-	float D = 1.8;
+	float D = 1.8f;
 	float PushDistance = 14;
 
 	if (m_position.y > 720 - R)
@@ -91,14 +93,14 @@ void Enemy::Draw(Renderer2D* renderer)
 	//Draw sprite: if Enemy has been hit, the sprite drawn will switch between m_hitSprite and m_sprite every 0.4 seconds 5 times
 	if (m_flickerCounter == 1 || m_flickerCounter == 3 || m_flickerCounter == 5)
 	{
-		renderer->drawSprite(m_hitSprite, m_position.x, m_position.y);
+		renderer->drawSprite(m_hitSprite, m_position.x, m_position.y, m_radius * 2, m_radius * 2);
 
 		if (m_firstRound == true)
 			m_firstRound = false;
 	}
 
 	else
-		renderer->drawSprite(m_sprite, m_position.x, m_position.y);
+		renderer->drawSprite(m_sprite, m_position.x, m_position.y, m_radius * 2, m_radius * 2);
 	//~
 
 

@@ -7,6 +7,9 @@
 using aie::Texture;
 using aie::Renderer2D;
 
+class SteeringBehaviour;
+class SteeringForce;
+
 class Agent
 {
 
@@ -24,9 +27,16 @@ public:
 	//
 	void OnFlee();
 
+	//Set variable matching the function name
+	void SetTargetList(vector<Agent*> Targets);
+	void AddFriendToList(Agent* Friend);
+	void AddSteering(SteeringE Steering_Enum, SteeringForce* Steering_Force);
+	void RemoveSteering(SteeringE Steering_Enum);
+	//~
+
 	//Returns variable matching the function name
-	IBehaviour*		GetBehaviour(BehaviourE Index);
-	vector<Agent*>	GetTargets();
+	vector<Agent*> GetTargets();
+	vector<Agent*> GetFriends();
 
 	Vector2	GetPos();
 	Vector2 GetCurrentVelocity();
@@ -57,13 +67,13 @@ protected:
 	map<BehaviourE, IBehaviour*> m_behaviours;
 	StateMachine* m_stateMachine;
 
-	vector<Agent*>	m_targets;
+	vector<Agent*> m_targets;
+	vector<Agent*> m_friends;
 
 	float	m_flickerTime;
 	int		m_flickerCounter;
 	bool	m_firstRound;
 	bool	m_wasAttacked;
-	//bool	m_hitWall;
 	bool	m_isPlayer;
 
 private:

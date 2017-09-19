@@ -1,4 +1,5 @@
 #include "Agent.h"
+#include "SteeringBehaviour.h"
 
 void Agent::AddForce(Vector2 force)
 {
@@ -20,15 +21,37 @@ void Agent::OnFlee()
 }
 
 
-//Get Functions
-IBehaviour* Agent::GetBehaviour(BehaviourE Index)
+//Set Functions
+void Agent::SetTargetList(vector<Agent*> Targets)
 {
-	return m_behaviours[Index];
+	m_targets = Targets;
 }
 
+void Agent::AddFriendToList(Agent* Friend)
+{
+	m_friends.push_back(Friend);
+}
+
+void Agent::AddSteering(SteeringE Steering_Enum, SteeringForce* Steering_Force)
+{
+	dynamic_cast<SteeringBehaviour*>(m_behaviours.at(BehaviourE::STEERING))->AddSteering(Steering_Enum, Steering_Force);
+}
+
+void Agent::RemoveSteering(SteeringE Steering_Enum)
+{
+	dynamic_cast<SteeringBehaviour*>(m_behaviours.at(BehaviourE::STEERING))->RemoveSteering(Steering_Enum);
+}
+
+
+//Get Functions
 vector<Agent*> Agent::GetTargets()
 {
 	return m_targets;
+}
+
+vector<Agent*> Agent::GetFriends()
+{
+	return m_friends;
 }
 
 Vector2 Agent::GetPos()

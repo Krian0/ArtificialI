@@ -12,7 +12,7 @@ class Agent;
 class StateMachine
 {
 public:
-	StateMachine(Agent* An_Agent, map<StateE, State*> Available_States, StateE Start_State);
+	StateMachine(Agent* An_Agent, StateE Start_State);
 	~StateMachine();
 
 	void Update(Agent* An_Agent, float DeltaTime);
