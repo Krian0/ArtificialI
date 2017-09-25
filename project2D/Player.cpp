@@ -33,13 +33,18 @@ Player::~Player()
 
 void Player::Update(float DeltaTime)
 {
+	//Update StateMachine and Behaviours
 	m_stateMachine->Update(this, DeltaTime);
 
 	for (unsigned int i = 0; i < m_behaviours.size(); i++)
 		m_behaviours.at(BehaviourE(i))->Update(this, DeltaTime);
+	//~
 
 	//Move
 	m_velocity += m_force * DeltaTime;
+
+	if (m_force == Vector2(0, 0))
+		m_velocity *= 0.9998;
 
 	if (m_velocity.magnitude() > m_velocityLimit)
 	{
@@ -48,42 +53,17 @@ void Player::Update(float DeltaTime)
 	}
 
 	m_position += (m_velocity * DeltaTime);
-
-	//Limit Player movement to window size
-	float R = (m_radius / 2);
-	float D = 1.7f;
-	int PushDistance = 4;
-
-	if (m_position.y > 720 - R)
-	{
-		m_position.y -= PushDistance;
-		m_velocity.y = -m_velocity.y / D;
-	}
-	if (m_position.y < 0 + R)
-	{
-		m_position.y += PushDistance;
-		m_velocity.y = -m_velocity.y / D;
-	}
-	
-	if (m_position.x > 1280 - R)
-	{
-		m_position.x -= PushDistance;
-		m_velocity.x = -m_velocity.x / D;
-	}
-	if (m_position.x < 0 + R)
-	{
-		m_position.x += PushDistance;
-		m_velocity.x = -m_velocity.x / D;
-	}
 	//~
 
-	//Check for any collisions and bounce
+	//Limit Player movement to window size
+	OnCollide(Vector2(m_radius, m_radius), Vector2(m_windowSize.x - m_radius, m_windowSize.y - m_radius));
+	//~
+
+	//Move Agent out of other Agents, reverse velocity and degrade velocity on collision
 	for (unsigned int i = 0; i < m_targets.size(); i++)
-	{
 		if (IsColliding(m_targets[i]) == true)
-			m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
-	}
-	//~~
+			OnCollide(m_targets[i]->GetPos());
+	//~
 	
 	
 	//Count how much time has passed if counter is above 0 (Player has been hit), skips once each time the Player has been hit

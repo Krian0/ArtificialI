@@ -22,6 +22,11 @@ bool Application2D::startup()
 	m_cameraY = 0;
 	m_timer = 0;
 
+	//
+	m_pathfinding = new AStarGraph();
+	m_pathfinding->SetGraphNodes(10, 10);
+	//
+
 	m_enemySprite = new aie::Texture("./textures/ball_3.png");
 	m_hitSprite = new aie::Texture("./textures/ball.png");
 
@@ -32,9 +37,6 @@ bool Application2D::startup()
 	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 700)));
 	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 600)));
 	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 500)));
-	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(700, 700)));
-	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(700, 600)));
-	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(700, 500)));
 
 	m_player->SetTargetList(m_enemies);
 	for (unsigned int i = 0; i < m_enemies.size(); i++)
@@ -49,6 +51,11 @@ bool Application2D::startup()
 
 void Application2D::shutdown() 
 {
+	//
+	delete m_pathfinding;
+	//
+
+
 	delete m_2dRenderer;
 	delete m_enemySprite;
 	delete m_hitSprite;
@@ -77,6 +84,11 @@ void Application2D::draw()
 	clearScreen();
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 	m_2dRenderer->begin();
+
+	//
+	for (auto Nodes : m_pathfinding->m_nodes)
+		m_2dRenderer->drawCircle(Nodes->m_position.x, Nodes->m_position.y, 10);
+	//
 
 	m_player->Draw(m_2dRenderer);
 

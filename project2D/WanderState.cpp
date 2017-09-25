@@ -6,8 +6,8 @@
 
 WanderState::WanderState() 
 {
-	m_wander = new WanderForce;
-	m_evade = new EvadeForce;
+	m_wander	= new WanderForce;
+	m_evade		= new EvadeForce;
 }
 
 WanderState::~WanderState() 

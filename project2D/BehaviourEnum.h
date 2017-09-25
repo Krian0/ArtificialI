@@ -11,6 +11,7 @@ enum class SteeringE
 	EVADE,
 	FLEE,
 	SEEK,
+	ARRIVAL,
 	WANDER,
 	END
 };

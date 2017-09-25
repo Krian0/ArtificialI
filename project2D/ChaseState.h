@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
 
+class ArrivalForce;
 class SeekForce;
 
 //Enemy will chase the Player until conditions to change state are met.
@@ -17,6 +18,7 @@ public:
 
 private:
 
-	SeekForce* m_seek;
+	ArrivalForce*	m_arrival;
+	SeekForce*		m_seek;
 
 };

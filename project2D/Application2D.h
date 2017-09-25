@@ -7,6 +7,8 @@
 #include "Matrix2.h"
 
 //
+#include "AStarGraph.h"
+//
 #include "SteeringBehaviour.h"
 #include "AttackState.h"
 #include "WanderState.h"
@@ -38,6 +40,7 @@ protected:
 	aie::Texture* m_enemySprite;
 	aie::Texture* m_hitSprite;
 
+	AStarGraph*		m_pathfinding;
 
 	Player*			m_player;
 	vector<Agent*>	m_enemies;

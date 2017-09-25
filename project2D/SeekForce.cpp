@@ -2,7 +2,7 @@
 
 SeekForce::SeekForce()
 {
-	m_weight = 0.5;
+	m_weight = 0.50;
 }
 
 SeekForce::~SeekForce()

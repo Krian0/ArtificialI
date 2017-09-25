@@ -2,7 +2,7 @@
 
 EvadeForce::EvadeForce()
 {
-	m_weight = 1.0;
+	m_weight = 2.00;
 }
 
 EvadeForce::~EvadeForce()
@@ -12,20 +12,23 @@ EvadeForce::~EvadeForce()
 
 Vector2 EvadeForce::GetForce(Agent* An_Agent)
 {
-	Vector2 AgentPos = An_Agent->GetPos();
+	vector<Agent*> Friends = FindClosestFriends(An_Agent->GetFriends(), An_Agent);
 
-	vector<Agent*> Friends = FindClosestFriend(An_Agent->GetFriends(), AgentPos);
+	if (Friends.size() == 0)
+		return Vector2(0, 0);
 
-	if (Friends != NULL)
+	Vector2 Force(0, 0);
+
+	for (unsigned int i = 0; i < Friends.size(); i++)
 	{
-		Vector2 V = AgentPos - Friend->GetPos() + Friend->GetCurrentVelocity();
+		Vector2 V = An_Agent->GetPos() - Friends[i]->GetPos() + Friends[i]->GetCurrentVelocity();
 		Vector2 Normalized_V = V.normalise() * (float)An_Agent->m_velocityLimit;
-		Vector2 Force = (Normalized_V - An_Agent->GetCurrentVelocity());
+		Vector2 TempForce = (Normalized_V - An_Agent->GetCurrentVelocity());
 
-		return Force - An_Agent->GetCurrentVelocity();
+		Force += TempForce - An_Agent->GetCurrentVelocity();
 	}
 
-	return Vector2(0, 0);
+	return Force;
 }
 
 vector<Agent*> EvadeForce::FindClosestFriends(vector<Agent*> Friends, Agent* An_Agent)

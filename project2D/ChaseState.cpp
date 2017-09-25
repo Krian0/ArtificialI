@@ -1,15 +1,18 @@
 #include "ChaseState.h"
 #include "SteeringBehaviour.h"
+#include "ArrivalForce.h"
 #include "SeekForce.h"
 #include "Agent.h"
 
 ChaseState::ChaseState()
 {
-	m_seek = new SeekForce;
+	m_arrival	= new ArrivalForce;
+	m_seek		= new SeekForce;
 }
 
 ChaseState::~ChaseState()
 {
+	delete m_arrival;
 	delete m_seek;
 }
 
@@ -17,9 +20,7 @@ ChaseState::~ChaseState()
 void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
 	//Work out the distance from Enemy to Player
-	Vector2 TargetPos = An_Agent->GetTargets()[0]->GetPos();
-	Vector2 AgentPos = An_Agent->GetPos();
-	float Distance = (AgentPos - TargetPos).magnitude();
+	float Distance = (An_Agent->GetPos() - An_Agent->GetTargets()[0]->GetPos()).magnitude();
 	//~
 
 
@@ -41,6 +42,7 @@ void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 void ChaseState::Init(Agent* An_Agent)
 {
 	An_Agent->AddSteering(SteeringE::SEEK, m_seek);
+	An_Agent->AddSteering(SteeringE::ARRIVAL, m_arrival);
 }
 
 void ChaseState::Exit(Agent* An_Agent)

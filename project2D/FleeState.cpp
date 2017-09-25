@@ -34,6 +34,8 @@ void FleeState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 void FleeState::Init(Agent* An_Agent)
 {
+	An_Agent->RemoveSteering(SteeringE::ARRIVAL);
+
 	An_Agent->OnFlee();
 	An_Agent->AddSteering(SteeringE::FLEE, m_flee);
 }

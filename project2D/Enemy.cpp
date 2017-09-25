@@ -16,7 +16,7 @@ Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Positi
 	m_firstRound = false;
 
 	m_sightRange = 250;
-	m_attackRange = 50;
+	m_attackRange = 30;
 	m_velocityLimit = 480;
 
 	m_isPlayer = false;
@@ -30,10 +30,12 @@ Enemy::~Enemy()
 
 void Enemy::Update(float DeltaTime)
 {
+	//Update StateMachine and Behaviours
 	m_stateMachine->Update(this, DeltaTime);
 
 	for (unsigned int i = 0; i < m_behaviours.size(); i++)
 		m_behaviours.at(BehaviourE(i))->Update(this, DeltaTime);
+	//~
 
 	//Move
 	m_velocity += m_force * DeltaTime;
@@ -44,42 +46,21 @@ void Enemy::Update(float DeltaTime)
 		m_velocity *= (float)m_velocityLimit;
 	}
 
-	m_velocity -= m_velocity / 10;
-
 	m_position += m_velocity * DeltaTime;
-
-	//Limit Enemy movement to window size
-	float R = (m_radius / 2);
-	float D = 1.8f;
-	float PushDistance = 14;
-
-	if (m_position.y > 720 - R)
-	{
-		m_position.y -= PushDistance;
-		m_velocity.y = -m_velocity.y / D;
-	}
-	if (m_position.y < 0 + R)
-	{
-		m_position.y += PushDistance;
-		m_velocity.y = -m_velocity.y / D;
-	}
-
-	if (m_position.x > 1280 - R)
-	{
-		m_position.x -= PushDistance;
-		m_velocity.x = -m_velocity.x / D;
-	}
-	if (m_position.x < 0 + R)
-	{
-		m_position.x += PushDistance;
-		m_velocity.x = -m_velocity.x / D;
-	}
 	//~
 
-	//Check for any collisions and bounce
-		if (IsColliding(m_targets[0]) == true)
-			m_velocity = Vector2(-m_velocity.x, -m_velocity.y);
-	//~~
+	//Limit Enemy movement to window size
+	OnCollide(Vector2(m_radius, m_radius), Vector2(m_windowSize.x - m_radius, m_windowSize.y - m_radius));
+	//~
+
+	//Move Agent out of other Agents, reverse velocity and degrade velocity on collision
+	if (IsColliding(m_targets[0]) == true)
+		OnCollide(m_targets[0]->GetPos());
+
+	for (unsigned int i = 0; i < m_friends.size(); i++)
+		if (IsColliding(m_friends[i]) == true)
+			OnCollide(m_friends[i]->GetPos());
+	//~
 
 
 	//Count how much time has passed if counter is above 0 (Enemy has been hit), skips once each time the Enemy has been hit

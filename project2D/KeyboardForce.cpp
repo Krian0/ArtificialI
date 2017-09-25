@@ -2,7 +2,7 @@
 
 KeyboardForce::KeyboardForce()
 {
-	m_weight = 1.0;
+	m_weight = 1.00;
 }
 
 KeyboardForce::~KeyboardForce()

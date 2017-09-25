@@ -92,12 +92,14 @@
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Application2D.cpp" />
+    <ClCompile Include="ArrivalForce.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="ChaseState.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EvadeForce.cpp" />
     <ClCompile Include="FleeForce.cpp" />
     <ClCompile Include="FleeState.cpp" />
+    <ClCompile Include="AStarGraph.cpp" />
     <ClCompile Include="KeyboardForce.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -111,6 +113,7 @@
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Application2D.h" />
+    <ClInclude Include="ArrivalForce.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BehaviourEnum.h" />
     <ClInclude Include="ChaseState.h" />
@@ -118,6 +121,7 @@
     <ClInclude Include="EvadeForce.h" />
     <ClInclude Include="FleeForce.h" />
     <ClInclude Include="FleeState.h" />
+    <ClInclude Include="AStarGraph.h" />
     <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="KeyboardForce.h" />
     <ClInclude Include="Player.h" />

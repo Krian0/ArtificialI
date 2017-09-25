@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Steering\Forces">
       <UniqueIdentifier>{15353768-feba-41d5-a811-6674f9f692a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AStar">
+      <UniqueIdentifier>{999c8e77-cd9c-4c57-9615-ffe333ffcc30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AStar">
+      <UniqueIdentifier>{2a5cf25d-a9f6-4a63-be2e-2b95d457b5f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp">
@@ -113,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="SteeringForce.cpp">
       <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrivalForce.cpp">
+      <Filter>Source Files\Steering\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="AStarGraph.cpp">
+      <Filter>Source Files\AStar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="EvadeForce.h">
       <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrivalForce.h">
+      <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="AStarGraph.h">
+      <Filter>Header Files\AStar</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

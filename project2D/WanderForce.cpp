@@ -8,7 +8,7 @@ WanderForce::WanderForce()
 	m_previousTarget = Vector2(static_cast <float>(rand() % 100 - 50), static_cast <float>(rand() % 100 - 50));
 	m_previousTarget = m_previousTarget.normalise() * m_wanderRadius;
 
-	m_weight = 0.5;
+	m_weight = 0.25;
 }
 
 WanderForce::~WanderForce()

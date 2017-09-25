@@ -20,38 +20,58 @@ public:
 	virtual void Update(float DeltaTime) = 0;
 	virtual void Draw(Renderer2D* renderer) = 0;
 
-	//Sets m_force to the Vector2 parameter
+	//Sets m_force to parameter. Takes Vector2 parameter
 	void AddForce(Vector2 force);
-	//Makes the Agent's sprite flicker to a hit-sprite and back several times upon being hit
+	//Makes the Agent's sprite flicker to the hit-sprite and back several times upon being hit
 	void OnHit();
-	//
+	//Sets m_wasAttacked to false
 	void OnFlee();
+	//Handles collision through use of CollidePlus/CollideMinus. Takes a float and two Vector2 parameters
+	void OnCollide(Vector2 Min, Vector2 Max, bool UsingAgent = false, float VelocityDegrade = 0.90f);
+	//Handles collision through use of CollidePlus/CollideMinus. Takes a float and a Vector2 parameter
+	void OnCollide(Vector2 OtherAgentPos);
 
-	//Set variable matching the function name
+	//Set m_targets to parameter. Takes a vector of Agent pointers parameter
 	void SetTargetList(vector<Agent*> Targets);
+	//Add parameter to m_friends. Takes an Agent pointer parameter
 	void AddFriendToList(Agent* Friend);
+	//Used by states to set corresponding State in SteeringForce map to second parameter. Takes a SteeringE (enum) and SteeringForce pointer parameter
 	void AddSteering(SteeringE Steering_Enum, SteeringForce* Steering_Force);
+	//Used by states to set corresponding State in SteeringForce map to NULL. Takes a SteeringE (enum) parameter
 	void RemoveSteering(SteeringE Steering_Enum);
-	//~
 
-	//Returns variable matching the function name
+
+	//Returns m_targets
 	vector<Agent*> GetTargets();
+	//Returns m_friends
 	vector<Agent*> GetFriends();
-
+	//Returns m_position
 	Vector2	GetPos();
+	//Returns m_velocity
 	Vector2 GetCurrentVelocity();
 
+	//Returns m_radius
 	float	GetRadius();
+	//Returns m_wasAttacked. Used in AttackState
 	bool	WasAttacked();
+	//Returns m_isPlayer. Used in controlling States for the player (mainly in AttackState)
 	bool	IsAgentPlayer();
+	//Returns true if Agent is colliding with the parameter Agent. Takes an Agent pointer parameter
 	bool	IsColliding(Agent* The_Target);
-	//~
+
 
 	int m_sightRange;
 	int m_attackRange;
 	int m_velocityLimit;
 
 protected:
+
+	//Pos = Boundary + Radius, Vel = -(Vel = DegradeValue). Takes five float parameters.
+	void CollidePlus(float Boundary, float DegradeValue, float &Pos, float &Vel, bool UsingAgent);
+	//Pos = Boundary - Radius, Vel = -(Vel = DegradeValue). Takes five float parameters.
+	void CollideMinus(float Boundary, float DegradeValue, float &Pos, float &Vel, bool UsingAgent);
+	
+	Vector2 m_windowSize = Vector2(1280, 720); //Change this to window size if needed, window collision relies on it
 
 	//Body
 	Texture* m_sprite;
