@@ -17,25 +17,30 @@ void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColu
 {
 	Vector2 WindowExtents(1280, 720);
 
-	float SpaceX = WindowExtents.x / NodesInRow;
-	float SpaceY = WindowExtents.y / NodesInColumn;
+	float SpaceX = WindowExtents.x / NodesInColumn;
+	float SpaceY = WindowExtents.y / NodesInRow;
 
 	for (unsigned int i = 0; i < (NodesInRow * NodesInColumn); i++)
 		AddNode();
 
 	int NodeNum = 0;
-	Vector2 LastVec(0, 0);
+	Vector2 LastVec(SpaceX / 2, SpaceY / 2);
+
 
 	for (unsigned int r = 0; r < NodesInRow; r++)
 	{
 		for (unsigned int c = 0; c < NodesInColumn; c++)
 		{
 			//Set up Node position
-			LastVec.x += SpaceX;
-			if (LastVec.x > WindowExtents.x)
-				LastVec = Vector2(SpaceX, LastVec.y += SpaceY);
-			
+			if (NodeNum > 0)
+			{
+				LastVec.x += SpaceX;
+				if (LastVec.x > WindowExtents.x)
+					LastVec = Vector2(SpaceX / 2, LastVec.y += SpaceY);
+			}
+
 			m_nodes[NodeNum]->m_position = LastVec;
+
 
 			//Set up Node Edges
 			if (r != (NodesInRow - 1))
@@ -43,6 +48,7 @@ void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColu
 
 			if (c != (NodesInColumn - 1))
 				AddEdge(m_nodes[NodeNum], m_nodes[(NodeNum + 1)]);
+
 
 			NodeNum++;
 		}

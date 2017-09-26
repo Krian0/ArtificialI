@@ -13,8 +13,6 @@ public:
 	void Update(float DeltaTime) override;
 	void Draw(Renderer2D* renderer) override;
 
-	
-
 private:
 
 };

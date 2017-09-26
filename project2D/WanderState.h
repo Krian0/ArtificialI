@@ -5,6 +5,7 @@
 
 class WanderForce;
 class EvadeForce;
+class AvoidForce;
 
 //Enemy will wander in a random direction.
 //Switches to : Chase if Player is within sight-range.
@@ -22,5 +23,6 @@ private:
 
 	WanderForce* m_wander;
 	EvadeForce*  m_evade;
+	AvoidForce*  m_avoid;
 
 };

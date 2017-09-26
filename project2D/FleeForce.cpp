@@ -2,7 +2,7 @@
 
 FleeForce::FleeForce()
 {
-	m_weight = 0.70;
+	m_weight = 0.70f;
 }
 
 FleeForce::~FleeForce()

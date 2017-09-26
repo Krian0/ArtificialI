@@ -9,6 +9,7 @@ using aie::Renderer2D;
 
 class SteeringBehaviour;
 class SteeringForce;
+class BoxObject;
 
 class Agent
 {
@@ -30,11 +31,18 @@ public:
 	void OnCollide(Vector2 Min, Vector2 Max, bool UsingAgent = false, float VelocityDegrade = 0.90f);
 	//Handles collision through use of CollidePlus/CollideMinus. Takes a float and a Vector2 parameter
 	void OnCollide(Vector2 OtherAgentPos);
+	//
+	void OnCollide(BoxObject* Object, float VelocityDegrade = 0.90f);
 
+
+	//
+	void SetPathfindingMode(bool BooleanValue);
 	//Set m_targets to parameter. Takes a vector of Agent pointers parameter
 	void SetTargetList(vector<Agent*> Targets);
 	//Add parameter to m_friends. Takes an Agent pointer parameter
 	void AddFriendToList(Agent* Friend);
+	//
+	void AddObjects(vector<BoxObject*> Objects);
 	//Used by states to set corresponding State in SteeringForce map to second parameter. Takes a SteeringE (enum) and SteeringForce pointer parameter
 	void AddSteering(SteeringE Steering_Enum, SteeringForce* Steering_Force);
 	//Used by states to set corresponding State in SteeringForce map to NULL. Takes a SteeringE (enum) parameter
@@ -45,6 +53,8 @@ public:
 	vector<Agent*> GetTargets();
 	//Returns m_friends
 	vector<Agent*> GetFriends();
+	//
+	vector<BoxObject*> GetObjects();
 	//Returns m_position
 	Vector2	GetPos();
 	//Returns m_velocity
@@ -58,6 +68,8 @@ public:
 	bool	IsAgentPlayer();
 	//Returns true if Agent is colliding with the parameter Agent. Takes an Agent pointer parameter
 	bool	IsColliding(Agent* The_Target);
+	//
+	bool	PathfindingModeIsOn();
 
 
 	int m_sightRange;
@@ -89,12 +101,14 @@ protected:
 
 	vector<Agent*> m_targets;
 	vector<Agent*> m_friends;
+	vector<BoxObject*> m_objects;
 
 	float	m_flickerTime;
 	int		m_flickerCounter;
 	bool	m_firstRound;
 	bool	m_wasAttacked;
 	bool	m_isPlayer;
+	bool	m_pathfindingMode;
 
 private:
 

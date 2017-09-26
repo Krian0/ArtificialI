@@ -126,6 +126,15 @@
     <ClCompile Include="AStarGraph.cpp">
       <Filter>Source Files\AStar</Filter>
     </ClCompile>
+    <ClCompile Include="AvoidForce.cpp">
+      <Filter>Source Files\Steering\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxObject.cpp">
+      <Filter>Source Files\Entities\Agents</Filter>
+    </ClCompile>
+    <ClCompile Include="PathfindingState.cpp">
+      <Filter>Source Files\FSM\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h">
@@ -193,6 +202,15 @@
     </ClInclude>
     <ClInclude Include="AStarGraph.h">
       <Filter>Header Files\AStar</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxObject.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="AvoidForce.h">
+      <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="PathfindingState.h">
+      <Filter>Header Files\FSM\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,19 +3,12 @@
 #include "Application.h"
 #include "Renderer2D.h"
 #include "Audio.h"
-#include "Vector2.h"
-#include "Matrix2.h"
 
-//
 #include "AStarGraph.h"
-//
-#include "SteeringBehaviour.h"
-#include "AttackState.h"
-#include "WanderState.h"
-#include "ChaseState.h"
-#include "FleeState.h"
+#include "BoxObject.h"
 #include "Player.h"
 #include "Enemy.h"
+
 
 class Application2D : public aie::Application 
 {
@@ -42,6 +35,11 @@ protected:
 
 	AStarGraph*		m_pathfinding;
 
+	vector<BoxObject*> m_objects;
+
 	Player*			m_player;
 	vector<Agent*>	m_enemies;
+
+	bool m_switchToPathfinding;
+	float m_switchTimer = 2;
 };

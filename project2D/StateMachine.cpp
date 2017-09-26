@@ -5,15 +5,17 @@
 #include "WanderState.h"
 #include "ChaseState.h"
 #include "FleeState.h"
+#include "PathfindingState.h"
 
 StateMachine::StateMachine(Agent* An_Agent, StateE Start_State)
 {
 	/*m_availableStates = Available_States;*/
 
-	m_availableStates[StateE::ATTACK] = new AttackState;
-	m_availableStates[StateE::WANDER] = new WanderState;
-	m_availableStates[StateE::CHASE] = new ChaseState;
-	m_availableStates[StateE::FLEE] = new FleeState;
+	m_availableStates[StateE::ATTACK]	= new AttackState;
+	m_availableStates[StateE::WANDER]	= new WanderState;
+	m_availableStates[StateE::CHASE]	= new ChaseState;
+	m_availableStates[StateE::FLEE]		= new FleeState;
+	m_availableStates[StateE::PATHFIND] = new PathfindingState;
 
 	m_availableStates[Start_State]->Init(An_Agent);
 	m_currentState = m_availableStates[Start_State];

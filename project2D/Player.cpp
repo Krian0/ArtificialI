@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "BoxObject.h"
 
 Player::Player(Texture* Hit_Sprite, Vector2 Position)
 {
@@ -44,7 +45,7 @@ void Player::Update(float DeltaTime)
 	m_velocity += m_force * DeltaTime;
 
 	if (m_force == Vector2(0, 0))
-		m_velocity *= 0.9998;
+		m_velocity *= 0.9998f;
 
 	if (m_velocity.magnitude() > m_velocityLimit)
 	{
@@ -59,10 +60,15 @@ void Player::Update(float DeltaTime)
 	OnCollide(Vector2(m_radius, m_radius), Vector2(m_windowSize.x - m_radius, m_windowSize.y - m_radius));
 	//~
 
-	//Move Agent out of other Agents, reverse velocity and degrade velocity on collision
-	for (unsigned int i = 0; i < m_targets.size(); i++)
-		if (IsColliding(m_targets[i]) == true)
-			OnCollide(m_targets[i]->GetPos());
+	//Move Agent out of other Agents and Objects, reverse velocity and degrade velocity on collision
+	for (auto TR : m_targets)
+		if (IsColliding(TR) == true)
+			OnCollide(TR->GetPos());
+
+	for (auto OB : m_objects)
+		if (OB->IsColliding(this) == true)
+			OnCollide(OB);
+
 	//~
 	
 	

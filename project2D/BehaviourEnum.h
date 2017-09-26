@@ -8,6 +8,7 @@ enum class BehaviourE
 enum class SteeringE
 {
 	KEYBOARD = 0,
+	AVOID,
 	EVADE,
 	FLEE,
 	SEEK,

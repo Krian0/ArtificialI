@@ -1,6 +1,8 @@
 #include "Enemy.h"
+#include "BoxObject.h"
 
-Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position)
+
+Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position, AStarGraph* Graph)
 {
 	m_targets.push_back(Target);
 	m_behaviours[BehaviourE::STEERING] = new SteeringBehaviour;
@@ -20,6 +22,8 @@ Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Positi
 	m_velocityLimit = 480;
 
 	m_isPlayer = false;
+
+	m_pathfinding = Graph;
 }
 
 Enemy::~Enemy()
@@ -53,13 +57,17 @@ void Enemy::Update(float DeltaTime)
 	OnCollide(Vector2(m_radius, m_radius), Vector2(m_windowSize.x - m_radius, m_windowSize.y - m_radius));
 	//~
 
-	//Move Agent out of other Agents, reverse velocity and degrade velocity on collision
+	//Move Agent out of other Agents and Objects, reverse velocity and degrade velocity on collision
 	if (IsColliding(m_targets[0]) == true)
 		OnCollide(m_targets[0]->GetPos());
 
-	for (unsigned int i = 0; i < m_friends.size(); i++)
-		if (IsColliding(m_friends[i]) == true)
-			OnCollide(m_friends[i]->GetPos());
+	for (auto FR : m_friends)
+		if (IsColliding(FR) == true)
+			OnCollide(FR->GetPos());
+
+	for (auto OB : m_objects)
+		if (OB->IsColliding(this) == true)
+			OnCollide(OB);
 	//~
 
 

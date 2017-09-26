@@ -5,5 +5,6 @@ enum class StateE
 	WANDER,
 	CHASE,
 	FLEE,
+	PATHFIND,
 	END
 };

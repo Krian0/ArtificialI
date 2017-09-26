@@ -94,6 +94,7 @@
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="ArrivalForce.cpp" />
     <ClCompile Include="AttackState.cpp" />
+    <ClCompile Include="BoxObject.cpp" />
     <ClCompile Include="ChaseState.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EvadeForce.cpp" />
@@ -102,6 +103,8 @@
     <ClCompile Include="AStarGraph.cpp" />
     <ClCompile Include="KeyboardForce.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="AvoidForce.cpp" />
+    <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SeekForce.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -116,6 +119,7 @@
     <ClInclude Include="ArrivalForce.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BehaviourEnum.h" />
+    <ClInclude Include="BoxObject.h" />
     <ClInclude Include="ChaseState.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EvadeForce.h" />
@@ -124,6 +128,8 @@
     <ClInclude Include="AStarGraph.h" />
     <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="KeyboardForce.h" />
+    <ClInclude Include="AvoidForce.h" />
+    <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeekForce.h" />
     <ClInclude Include="State.h" />

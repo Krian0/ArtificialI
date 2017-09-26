@@ -1,4 +1,5 @@
 #include "Agent.h"
+#include "BoxObject.h"
 #include "SteeringBehaviour.h"
 
 void Agent::AddForce(Vector2 force)
@@ -23,17 +24,17 @@ void Agent::OnFlee()
 void Agent::OnCollide(Vector2 Min, Vector2 Max, bool UsingAgent, float VelocityDegrade)
 {
 	if (m_position.y > Max.y)
-		CollideMinus(Max.y, VelocityDegrade, m_position.y, m_velocity.y, UsingAgent);
+		CollidePlus(Max.y, VelocityDegrade, m_position.y, m_velocity.y, UsingAgent);
 
 	if (m_position.y <= Min.y)
-		CollidePlus(Min.y, VelocityDegrade, m_position.y, m_velocity.y, UsingAgent);
+		CollideMinus(Min.y, VelocityDegrade, m_position.y, m_velocity.y, UsingAgent);
 
 
 	if (m_position.x > Max.x)
-		CollideMinus(Max.x, VelocityDegrade, m_position.x, m_velocity.x, UsingAgent);
+		CollidePlus(Max.x, VelocityDegrade, m_position.x, m_velocity.x, UsingAgent);
 
 	if (m_position.x <= Min.x)
-		CollidePlus(Min.x, VelocityDegrade, m_position.x, m_velocity.x, UsingAgent);
+		CollideMinus(Min.x, VelocityDegrade, m_position.x, m_velocity.x, UsingAgent);
 }
 
 void Agent::OnCollide(Vector2 OtherAgentPos)
@@ -41,8 +42,31 @@ void Agent::OnCollide(Vector2 OtherAgentPos)
 	OnCollide(OtherAgentPos, OtherAgentPos, true);
 }
 
+void Agent::OnCollide(BoxObject* Object, float VelocityDegrade)
+{
+	Vector2 Min = Object->GetMin();
+	Vector2 Max = Object->GetMax();
+
+	if (m_position.y > Max.y)
+		CollidePlus(Max.y + m_radius + 2, VelocityDegrade, m_position.y, m_velocity.y, false);
+
+	if (m_position.y <= Min.y)
+		CollideMinus(Min.y - (m_radius + 2), VelocityDegrade, m_position.y, m_velocity.y, false);
+
+	if (m_position.x > Max.x)
+		CollidePlus(Max.x + m_radius + 2, VelocityDegrade, m_position.x, m_velocity.x, false);
+
+	if (m_position.x <= Min.x)
+		CollideMinus(Min.x - (m_radius + 2), VelocityDegrade, m_position.x, m_velocity.x, false);
+}
+
 
 //Set Functions
+void Agent::SetPathfindingMode(bool BooleanValue)
+{
+	m_pathfindingMode = BooleanValue;
+}
+
 void Agent::SetTargetList(vector<Agent*> Targets)
 {
 	m_targets = Targets;
@@ -51,6 +75,11 @@ void Agent::SetTargetList(vector<Agent*> Targets)
 void Agent::AddFriendToList(Agent* Friend)
 {
 	m_friends.push_back(Friend);
+}
+
+void Agent::AddObjects(vector<BoxObject*> Objects)
+{
+	m_objects = Objects;
 }
 
 void Agent::AddSteering(SteeringE Steering_Enum, SteeringForce* Steering_Force)
@@ -73,6 +102,11 @@ vector<Agent*> Agent::GetTargets()
 vector<Agent*> Agent::GetFriends()
 {
 	return m_friends;
+}
+
+vector<BoxObject*> Agent::GetObjects()
+{
+	return m_objects;
 }
 
 Vector2 Agent::GetPos()
@@ -116,6 +150,11 @@ bool Agent::IsColliding(Agent* The_Target)
 	return ThereIsAnOverlap;
 }
 
+bool Agent::PathfindingModeIsOn()
+{
+	return m_pathfindingMode;
+}
+
 
 void Agent::CollidePlus(float Boundary, float DegradeValue, float &Pos, float &Vel, bool UsingAgent)
 {
@@ -123,7 +162,7 @@ void Agent::CollidePlus(float Boundary, float DegradeValue, float &Pos, float &V
 		Pos = Boundary;
 
 	if (UsingAgent == true)
-		Pos -= 1;
+		Pos += 1;
 
 	Vel = -(Vel * DegradeValue);
 }
@@ -134,7 +173,7 @@ void Agent::CollideMinus(float Boundary, float DegradeValue, float &Pos, float &
 		Pos = Boundary;
 
 	if (UsingAgent == true)
-		Pos += 1;
+		Pos -= 1;
 
 	Vel = -(Vel * DegradeValue);
 }

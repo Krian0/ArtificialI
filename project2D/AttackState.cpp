@@ -16,6 +16,13 @@ AttackState::~AttackState()
 
 void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
+	//Check if State should change to PathfindingState
+	if (An_Agent->PathfindingModeIsOn() == true)
+	{
+		sm->ChangeState(An_Agent, StateE::PATHFIND);
+		return;
+	}
+
 	vector<Agent*> TargetsInRange = SortTargets(An_Agent, An_Agent->GetTargets());
 
 	//Attack any target Agents in range
