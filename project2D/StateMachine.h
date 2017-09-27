@@ -15,17 +15,16 @@ public:
 	StateMachine(Agent* An_Agent, StateE Start_State);
 	~StateMachine();
 
+	//Updates current State. Takes an Agent* parameter and a float parameter
 	void Update(Agent* An_Agent, float DeltaTime);
+	//Exits current State and Initializes next State. Takes an Agent* parameter and a StateE (enum) parameter  
 	void ChangeState(Agent* An_Agent, StateE A_State);
-	void ReturnToLastState();
 
 	State* GetCurrentState();
-	State* GetPrevState();
-
-	map<StateE, State*>	m_availableStates;
 
 private:
+	
+	map<StateE, State*>	m_availableStates;
 	State* m_currentState;
-	State* m_previousState;
 
 };

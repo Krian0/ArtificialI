@@ -35,10 +35,9 @@ protected:
 
 	AStarGraph*		m_pathfinding;
 
-	vector<BoxObject*> m_objects;
-
-	Player*			m_player;
-	vector<Agent*>	m_enemies;
+	vector<BoxObject*>	m_objects;
+	Player*				m_player;
+	vector<Agent*>		m_enemies;
 
 	bool m_switchToPathfinding;
 	float m_switchTimer = 2;

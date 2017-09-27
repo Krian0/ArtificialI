@@ -1,29 +1,30 @@
 #include "AStarGraph.h"
+#include "BoxObject.h"
+#include "Agent.h"
 
 AStarGraph::AStarGraph()
 {
+	m_windowExtents = Vector2(1280, 720);
 }
 
 AStarGraph::~AStarGraph()
 {
-	for (unsigned int i = 0; i < m_nodes.size(); i++)
-		m_nodes[i]->m_edges.clear();
+	for (auto N : m_nodes)
+		N->m_edges.clear();
 
 	m_nodes.clear();
 }
 
 
-void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColumn)
+void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColumn, vector<BoxObject*> Objects)
 {
-	Vector2 WindowExtents(1280, 720);
-
-	float SpaceX = WindowExtents.x / NodesInColumn;
-	float SpaceY = WindowExtents.y / NodesInRow;
-
 	for (unsigned int i = 0; i < (NodesInRow * NodesInColumn); i++)
-		AddNode();
+		AddNode(i);
+
 
 	int NodeNum = 0;
+	float SpaceX = m_windowExtents.x / NodesInColumn;
+	float SpaceY = m_windowExtents.y / NodesInRow;
 	Vector2 LastVec(SpaceX / 2, SpaceY / 2);
 
 
@@ -35,7 +36,7 @@ void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColu
 			if (NodeNum > 0)
 			{
 				LastVec.x += SpaceX;
-				if (LastVec.x > WindowExtents.x)
+				if (LastVec.x > m_windowExtents.x)
 					LastVec = Vector2(SpaceX / 2, LastVec.y += SpaceY);
 			}
 
@@ -53,43 +54,32 @@ void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColu
 			NodeNum++;
 		}
 	}
+
+	//Remove any Nodes colliding with any Objects
+	for (auto OB : Objects) 
+		for (unsigned int i = 0; i < m_nodes.size(); i++) 
+			if (OB->IsColliding(m_nodes[i]->m_position))
+				RemoveNode(i);
 }
 
-void AStarGraph::AddNode()
+Node* AStarGraph::FindClosestNode(Agent* An_Agent)
 {
-	m_nodes.push_back(new Node);
-}
+	Node* ClosestNode;
+	float LastDistance = 99999;
 
-void AStarGraph::RemoveNode(unsigned int Index)
-{
-	//Goes through all Edges for Node at Index (IndexNode)
-	for (unsigned int i = 0; i < m_nodes[Index]->m_edges.size(); i++)
+	for (auto N : m_nodes)
 	{
-		//Sets ConnectedNode to the target of the current (IndexNode) Edge
-		Node* ConnectedNode = m_nodes[Index]->m_edges[i]->m_end;
+		float CurrentDistance = (An_Agent->GetPos() - N->m_position).magnitude();
 
-
-		//Goes through all (ConnectedNode) Edges in reverse and deletes any (ConnectedNode) Edges whose target is the IndexNode
-		for (int e = ConnectedNode->m_edges.size(); e >= 0; e--)
-			if (ConnectedNode->m_edges[e]->m_end == m_nodes[Index])
-				ConnectedNode->m_edges.erase(ConnectedNode->m_edges.begin() + e);
+		if (CurrentDistance < LastDistance)
+		{
+			ClosestNode = N;
+			LastDistance = CurrentDistance;
+		}
 	}
 
-
-	//Remove the Node at the position of the given Index
-	m_nodes.erase(m_nodes.begin() + Index);
+	return ClosestNode;
 }
-
-
-void AStarGraph::AddEdge(Node* Node1, Node* Node2)
-{ 
-	if (DoesEdgeExist(Node1, Node2) == false)
-		Node1->m_edges.push_back(new Edge(Node1, Node2));
-
-	if (DoesEdgeExist(Node2, Node1) == false)
-		Node2->m_edges.push_back(new Edge(Node2, Node1));
-}
-
 
 stack<Vector2> AStarGraph::BreadthFirstSearch(Node* Start_Node, Node* End_Node)
 {
@@ -124,7 +114,7 @@ stack<Vector2> AStarGraph::BreadthFirstSearch(Node* Start_Node, Node* End_Node)
 			if (IsNodeOnList(ENode, ClosedList) == false)
 			{
 				ENode->m_gScore = CurrentNode->m_gScore + Edges->m_cost;
-				ENode->m_hScore = GetHScore(ENode, End_Node);
+				ENode->m_hScore = ENode->m_position.dot(End_Node->m_position);
 				ENode->m_fScore = ENode->m_gScore + ENode->m_hScore;
 
 				ENode->m_parent = CurrentNode;
@@ -146,27 +136,63 @@ stack<Vector2> AStarGraph::BreadthFirstSearch(Node* Start_Node, Node* End_Node)
 }
 
 
+void AStarGraph::AddNode(unsigned int Index)
+{
+	m_nodes.push_back(new Node);
+	m_nodes.back()->m_nodeID = Index;
+}
+
+void AStarGraph::RemoveNode(unsigned int Index)
+{
+	RemoveNode(m_nodes[Index]);
+}
+
+void AStarGraph::RemoveNode(Node* The_Node)
+{
+	//Goes through all Edges for the Node
+	for (auto E : The_Node->m_edges)
+	{
+		//Sets the connected Node (CN) to the target of the current (The_Node) Edge
+		Node* CN = E->m_end;
+
+		//Goes through all (CN) Edges and deletes any (CN) Edges whose target is the The_Node
+		for (auto CNE = CN->m_edges.begin(); CNE != CN->m_edges.end(); )
+		{
+			if ((*CNE)->m_end == The_Node)
+				CNE = CN->m_edges.erase(CNE);
+			else
+				++CNE;
+		}
+	}
+
+
+	m_nodes.erase(m_nodes.begin() + The_Node->m_nodeID);
+}
+
+
+void AStarGraph::AddEdge(Node* Node1, Node* Node2)
+{
+	if (DoesEdgeExist(Node1, Node2) == false)
+		Node1->m_edges.push_back(new Edge(Node1, Node2));
+
+	if (DoesEdgeExist(Node2, Node1) == false)
+		Node2->m_edges.push_back(new Edge(Node2, Node1));
+}
+
 bool AStarGraph::DoesEdgeExist(Node* NodeA, Node* NodeB)
 {
-	for (unsigned int i = 0; i < NodeA->m_edges.size(); i++)
-		if (NodeA->m_edges[i]->m_end == NodeB)
+	for (auto Edges : NodeA->m_edges)
+		if (Edges->m_end == NodeB)
 				return true;
 
 	return false;
 }
 
-bool AStarGraph::IsNodeOnList(Node* The_Node, list<Node*> The_List)
+bool AStarGraph::IsNodeOnList(Node* The_Node, list<Node*> Node_List)
 {
-	for (auto ListNode : The_List)
-	{
-		if (The_Node == ListNode)
+	for (auto NL : Node_List)
+		if (The_Node == NL)
 			return true;
-	}
 
 	return false;
-}
-
-float AStarGraph::GetHScore(Node* NodeA, Node* NodeB)
-{
-	return NodeA->m_position.dot(NodeB->m_position);
 }

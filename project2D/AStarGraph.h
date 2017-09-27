@@ -9,6 +9,8 @@ using std::list;
 
 struct Node;
 struct Edge;
+class BoxObject;
+class Agent;
 
 class AStarGraph
 {
@@ -16,30 +18,31 @@ public:
 	AStarGraph();
 	~AStarGraph();
 
-	void SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColumn);
-
-	//Push back a new Node to m_nodes
-	void AddNode();
-	//Removes the Node in m_nodes at the given (unsigned int) Index. Takes an unsigned int parameter
-	void RemoveNode(unsigned int Index);
-
-	//Push back a new Edge between each Node, to each Node. Takes two Node* parameters
-	void AddEdge(Node* Node1, Node* Node2);
+	//
+	void SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColumn, vector<BoxObject*> Objects);
+	//
+	Node* FindClosestNode(Agent* An_Agent);
 
 	stack<Vector2> BreadthFirstSearch(Node* Start_Node, Node* End_Node);
 
 
 	vector<Node*> m_nodes;
+	Vector2 m_windowExtents;
 
 private:
+	//Push back a new Node to m_nodes, set Node ID to Index. Takes an unsigned int parameter
+	void AddNode(unsigned int Index);
+	//Removes a Node by a given (unsigned int) Index. Takes an unsigned int parameter
+	void RemoveNode(unsigned int Index);
+	//Removes a Node by a given Node*. Takes a Node* parameter
+	void RemoveNode(Node* The_Node);
+	//Push back a new Edge between each Node, to each Node. Takes two Node* parameters
+	void AddEdge(Node* Node1, Node* Node2);
 
 	//Returns true if an Edge already exists starting from NodeA ending at NodeB, otherwise returns false. Takes two Node* parameters
 	bool DoesEdgeExist(Node* NodeA, Node* NodeB);
 	//Returns true if the given Node is on the given List. Used in BFS. Takes a Node* parameter and a Node* list parameter
-	bool IsNodeOnList(Node* The_Node, list<Node*> The_List);
-	//
-	float GetHScore(Node* NodeA, Node* NodeB);
-
+	bool IsNodeOnList(Node* The_Node, list<Node*> Node_List);
 };
 
 
@@ -51,6 +54,8 @@ struct Node
 	float m_gScore;
 	float m_hScore;
 	float m_fScore;
+
+	int m_nodeID;
 
 	vector<Edge*> m_edges;
 

@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "BoxObject.h"
-
+#include "AStarGraph.h"
 
 Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position, AStarGraph* Graph)
 {
@@ -24,6 +24,7 @@ Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Positi
 	m_isPlayer = false;
 
 	m_pathfinding = Graph;
+	m_pathfindingMode = false;
 }
 
 Enemy::~Enemy()
@@ -39,7 +40,6 @@ void Enemy::Update(float DeltaTime)
 
 	for (unsigned int i = 0; i < m_behaviours.size(); i++)
 		m_behaviours.at(BehaviourE(i))->Update(this, DeltaTime);
-	//~
 
 	//Move
 	m_velocity += m_force * DeltaTime;
@@ -51,11 +51,9 @@ void Enemy::Update(float DeltaTime)
 	}
 
 	m_position += m_velocity * DeltaTime;
-	//~
 
 	//Limit Enemy movement to window size
 	OnCollide(Vector2(m_radius, m_radius), Vector2(m_windowSize.x - m_radius, m_windowSize.y - m_radius));
-	//~
 
 	//Move Agent out of other Agents and Objects, reverse velocity and degrade velocity on collision
 	if (IsColliding(m_targets[0]) == true)
@@ -68,13 +66,11 @@ void Enemy::Update(float DeltaTime)
 	for (auto OB : m_objects)
 		if (OB->IsColliding(this) == true)
 			OnCollide(OB);
-	//~
 
 
 	//Count how much time has passed if counter is above 0 (Enemy has been hit), skips once each time the Enemy has been hit
 	if (m_flickerCounter > 0 && m_firstRound == false)
 		m_flickerTime += DeltaTime;
-	//~
 }
 
 void Enemy::Draw(Renderer2D* renderer)
@@ -90,7 +86,11 @@ void Enemy::Draw(Renderer2D* renderer)
 
 	else
 		renderer->drawSprite(m_sprite, m_position.x, m_position.y, m_radius * 2, m_radius * 2);
-	//~
+
+	//Draw circle representing the Node the Enemy is seeking towards
+	renderer->setRenderColour( 1, 1, 0);
+	renderer->drawCircle(m_currentlySeeking.x, m_currentlySeeking.y, 10);
+	renderer->setRenderColour(1, 1, 1, 1);
 
 
 	//If 0.1 or more seconds has passed since the last sprite switch, and there are still switches left, switch sprites
@@ -99,5 +99,4 @@ void Enemy::Draw(Renderer2D* renderer)
 		m_flickerTime = 0;
 		m_flickerCounter--;
 	}
-	//~
 }

@@ -16,10 +16,10 @@ private:
 
 	BoxObject* FindClosestObject(Line Ahead);
 
-	const int m_maxSight = 120;
-	const int m_maxAvoidForce = 640;
-	
+
 	vector<BoxObject*> m_objects;
+	
+	const int m_maxAvoidForce = 2000;
 
 };
 

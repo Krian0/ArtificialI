@@ -2,8 +2,6 @@
 #include "Agent.h"
 #include "SteeringBehaviour.h"
 
-class AStarGraph;
-
 class Enemy : public Agent
 {
 public:
@@ -13,9 +11,6 @@ public:
 	void Update(float DeltaTime) override;
 	void Draw(Renderer2D* renderer) override;
 
-
 private:
-
-	AStarGraph*	m_pathfinding;
 
 };

@@ -22,6 +22,8 @@ Player::Player(Texture* Hit_Sprite, Vector2 Position)
 	m_sightRange = 250;
 	m_attackRange = 40;
 	m_velocityLimit = 500;
+
+	m_pathfindingMode = false;
 }
 
 Player::~Player()

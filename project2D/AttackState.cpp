@@ -16,24 +16,16 @@ AttackState::~AttackState()
 
 void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
-	//Check if State should change to PathfindingState
-	if (An_Agent->PathfindingModeIsOn() == true)
-	{
-		sm->ChangeState(An_Agent, StateE::PATHFIND);
-		return;
-	}
-
 	vector<Agent*> TargetsInRange = SortTargets(An_Agent, An_Agent->GetTargets());
 
 	//Attack any target Agents in range
 	if (m_hasAttacked == false && TargetsInRange.size() > 0)
 	{
-		for (unsigned int i = 0; i < TargetsInRange.size(); i++)
-			TargetsInRange[i]->OnHit();
+		for (auto TA : TargetsInRange)
+			TA->OnHit();
 		
 		m_hasAttacked = true;
 	}
-	//~
 
 
 	//Decrease timer and decide what to do when timer is less than or equal to 0 
@@ -45,7 +37,6 @@ void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 		{
 			//Work out the distance between Agents
 			float Distance = (An_Agent->GetPos() - An_Agent->GetTargets()[0]->GetPos()).magnitude();
-			//~
 
 			//Change state if the proper conditions are met
 			if (An_Agent->WasAttacked() == true)
@@ -65,15 +56,12 @@ void AttackState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 				sm->ChangeState(An_Agent, StateE::CHASE);
 				return;
 			}
-			//~
 		}
 
-		//Otherwise, reset the wait timer and set has attacked to false (attack again)
+		//Otherwise, reset the wait timer and set has attacked to false (allow Agent to attack again)
 		m_waitTimer = 0.2f;
 		m_hasAttacked = false;
-		//~	
 	}
-	//~
 }
 
 void AttackState::Init(Agent* An_Agent)
@@ -95,17 +83,16 @@ vector<Agent*> AttackState::SortTargets(Agent* An_Agent, vector<Agent*> Targets)
 {
 	vector<Agent*> TargetsInRange;
 
-	for (unsigned int i = 0; i < Targets.size(); i++)
+	for (auto TA : Targets)
 	{
-		Vector2 Pos = Targets[i]->GetPos() - An_Agent->GetPos();
+		Vector2 Pos = TA->GetPos() - An_Agent->GetPos();
 
-		float TargetRadius = Targets[i]->GetRadius();
+		float TargetRadius = TA->GetRadius();
 		float CombinedRadiiSquared = (An_Agent->m_attackRange + TargetRadius) * (An_Agent->m_attackRange + TargetRadius);
 
 		//Check if any target Agents are within range, and add them to the TargetsInRange vector if they are
 		if (Pos.dot(Pos) <= CombinedRadiiSquared)
-			TargetsInRange.push_back(Targets[i]);
-		//~
+			TargetsInRange.push_back(TA);
 	}
 
 	return TargetsInRange;

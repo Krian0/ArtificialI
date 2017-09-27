@@ -26,7 +26,7 @@ void WanderState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 	//~
 
 	//Change state if the proper conditions are met
-	if (Distance <= An_Agent->m_sightRange)
+	if (Distance <= An_Agent->m_sightRange || An_Agent->PathfindingModeIsOn() == true)
 	{
 		sm->ChangeState(An_Agent, StateE::CHASE);
 		return;

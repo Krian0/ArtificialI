@@ -104,7 +104,6 @@
     <ClCompile Include="KeyboardForce.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="AvoidForce.cpp" />
-    <ClCompile Include="PathfindingState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SeekForce.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -129,7 +128,6 @@
     <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="KeyboardForce.h" />
     <ClInclude Include="AvoidForce.h" />
-    <ClInclude Include="PathfindingState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeekForce.h" />
     <ClInclude Include="State.h" />

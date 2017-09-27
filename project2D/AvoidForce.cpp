@@ -3,7 +3,7 @@
 
 AvoidForce::AvoidForce()
 {
-	m_weight = 8.00f;
+	m_weight = 1.00f;
 }
 
 AvoidForce::~AvoidForce()
@@ -19,7 +19,8 @@ Vector2 AvoidForce::GetForce(Agent* An_Agent)
 
 	float DynamicLength = V.magnitude() / An_Agent->m_velocityLimit;
 
-	Line Ahead(An_Agent->GetPos(), V.normalise(), DynamicLength * 120);
+	Line Ahead(An_Agent->GetPos(), V.normalise(), DynamicLength * 400);
+	Ahead.m_endPoint2 = V.normalise() * 60;
 
 	BoxObject* ClosestObject = FindClosestObject(Ahead);
 	Vector2 AvoidForce(0, 0);
@@ -34,11 +35,8 @@ Vector2 AvoidForce::GetForce(Agent* An_Agent)
 		AvoidForce = AvoidForce.normalise() * (float)m_maxAvoidForce;
 	}
 
-
-	Ahead.m_endPoint2 = Ahead.m_endPoint / 2;
-	
 	//Check half-sized EndPoint with Object
-	if (ClosestObject->IsColliding(Ahead.m_endPoint2) == true)
+	else if (ClosestObject->IsColliding(Ahead.m_endPoint2) == true)
 	{
 		Vector2 COPos = ClosestObject->GetPos();
 		AvoidForce = Ahead.m_endPoint2 - COPos;
@@ -47,7 +45,7 @@ Vector2 AvoidForce::GetForce(Agent* An_Agent)
 	}
 
 	//Check Origin (current location) with Object
-	if (ClosestObject->IsColliding(Ahead.m_origin) == true)
+	else if (ClosestObject->IsColliding(Ahead.m_origin) == true)
 	{
 		Vector2 COPos = ClosestObject->GetPos();
 		AvoidForce = Ahead.m_origin - COPos;

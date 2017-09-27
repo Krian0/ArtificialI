@@ -4,11 +4,14 @@
 #include "Renderer2D.h"
 #include "IBehaviour.h"
 #include "StateMachine.h"
+#include <stack>
+using std::stack;
 using aie::Texture;
 using aie::Renderer2D;
 
 class SteeringBehaviour;
 class SteeringForce;
+class AStarGraph;
 class BoxObject;
 
 class Agent
@@ -66,11 +69,18 @@ public:
 	bool	WasAttacked();
 	//Returns m_isPlayer. Used in controlling States for the player (mainly in AttackState)
 	bool	IsAgentPlayer();
+	//
+	bool	IsCollidingWithNode(Vector2 Point);
 	//Returns true if Agent is colliding with the parameter Agent. Takes an Agent pointer parameter
 	bool	IsColliding(Agent* The_Target);
 	//
 	bool	PathfindingModeIsOn();
 
+	//
+	stack<Vector2> GetPathfindingVectors();
+
+
+	Vector2 m_currentlySeeking;
 
 	int m_sightRange;
 	int m_attackRange;
@@ -102,6 +112,8 @@ protected:
 	vector<Agent*> m_targets;
 	vector<Agent*> m_friends;
 	vector<BoxObject*> m_objects;
+
+	AStarGraph*	m_pathfinding;
 
 	float	m_flickerTime;
 	int		m_flickerCounter;

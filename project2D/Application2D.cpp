@@ -2,17 +2,11 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
+#include <time.h>
 
-//
+Application2D::Application2D() {}
 
-
-Application2D::Application2D() 
-{
-}
-
-Application2D::~Application2D() 
-{
-}
+Application2D::~Application2D() {}
 
 bool Application2D::startup() 
 {
@@ -22,10 +16,10 @@ bool Application2D::startup()
 	m_cameraY = 0;
 	m_timer = 0;
 
+	srand((unsigned int)time(NULL));
 
 	m_switchToPathfinding = false;
 	m_pathfinding = new AStarGraph();
-	m_pathfinding->SetGraphNodes(20, 20);
 
 
 	m_enemySprite = new aie::Texture("./textures/ball_3.png");
@@ -35,14 +29,12 @@ bool Application2D::startup()
 	m_objects.push_back(new BoxObject(Vector2(500, 500), Vector2(200, 40)));
 	m_objects.push_back(new BoxObject(Vector2(800, 300), Vector2(100, 20)));
 	m_objects.push_back(new BoxObject(Vector2(200, 100), Vector2(100, 20)));
+	m_pathfinding->SetGraphNodes(10, 10, m_objects);
 
 	m_player = new Player(m_hitSprite, Vector2(200, 200));
 	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(900, 700), m_pathfinding));
 	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(900, 600), m_pathfinding));
 	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(900, 500), m_pathfinding));
-	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 700), m_pathfinding));
-	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 600), m_pathfinding));
-	m_enemies.push_back(new Enemy(m_player, m_enemySprite, m_hitSprite, Vector2(800, 500), m_pathfinding));
 
 
 	m_player->SetTargetList(m_enemies);
@@ -67,8 +59,8 @@ void Application2D::shutdown()
 	delete m_pathfinding;
 	delete m_enemySprite;
 	delete m_hitSprite;
-	delete m_player;
 	m_objects.clear();
+	delete m_player;
 	m_enemies.clear();
 }
 
@@ -96,8 +88,8 @@ void Application2D::update(float deltaTime)
 
 	m_player->Update(deltaTime);
 
-	for (auto iter = m_enemies.begin(); iter != m_enemies.end(); iter++)
-		(*iter)->Update(deltaTime);
+	for (auto EN : m_enemies)
+		EN->Update(deltaTime);
 }
 
 void Application2D::draw() 
@@ -108,17 +100,17 @@ void Application2D::draw()
 
 
 	if (m_switchToPathfinding == true)
-		for (auto Nodes : m_pathfinding->m_nodes)
-			m_2dRenderer->drawCircle(Nodes->m_position.x, Nodes->m_position.y, 6);
+		for (auto N : m_pathfinding->m_nodes)
+			m_2dRenderer->drawCircle(N->m_position.x, N->m_position.y, 6);
 
+
+	for (auto OB : m_objects)
+		OB->Draw(m_2dRenderer);
 
 	m_player->Draw(m_2dRenderer);
 
-	for (auto An_Enemy : m_enemies)
-		An_Enemy->Draw(m_2dRenderer);
-
-	for (auto Object : m_objects)
-		Object->Draw(m_2dRenderer);
+	for (auto EN : m_enemies)
+		EN->Draw(m_2dRenderer);
 
 
 	m_2dRenderer->end();

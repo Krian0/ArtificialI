@@ -1,6 +1,8 @@
 #include "Agent.h"
 #include "BoxObject.h"
 #include "SteeringBehaviour.h"
+#include "AStarGraph.h"
+#include <time.h> 
 
 void Agent::AddForce(Vector2 force)
 {
@@ -134,6 +136,16 @@ bool Agent::IsAgentPlayer()
 	return m_isPlayer;
 }
 
+bool Agent::IsCollidingWithNode(Vector2 Point)
+{
+	float Distance = (Point - m_position).magnitude();
+
+	if (Distance <= m_radius * 10)
+		return true;
+
+	return false;
+}
+
 bool Agent::IsColliding(Agent* The_Target)
 {
 	Vector2 TargetPos = The_Target->GetPos();
@@ -142,17 +154,32 @@ bool Agent::IsColliding(Agent* The_Target)
 	float TargetRadius = The_Target->GetRadius();
 	float CombinedRadiiSquared = (m_radius + TargetRadius + 2) * (m_radius + TargetRadius + 2);
 
-	bool ThereIsAnOverlap = false;
-
 	if (Pos.dot(Pos) <= CombinedRadiiSquared)
-		ThereIsAnOverlap = true;
+		return true;
 
-	return ThereIsAnOverlap;
+	return false;
 }
 
 bool Agent::PathfindingModeIsOn()
 {
 	return m_pathfindingMode;
+}
+
+stack<Vector2> Agent::GetPathfindingVectors()
+{	
+	bool ValidNum = false;
+	int NodeNum = rand() % m_pathfinding->m_nodes.size();
+
+	while (m_pathfinding->m_nodes[NodeNum] == NULL)
+	{
+		NodeNum = rand() % m_pathfinding->m_nodes.size();
+
+		if (m_pathfinding->m_nodes[NodeNum] != NULL)
+			ValidNum = true;
+	}
+
+
+	return m_pathfinding->BreadthFirstSearch(m_pathfinding->FindClosestNode(this), m_pathfinding->m_nodes[NodeNum]);
 }
 
 

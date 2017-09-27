@@ -3,7 +3,7 @@
 
 class KeyboardForce;
 
-//Agent will attack any targets in range and wait 0.2 seconds before deciding whether to attack again or change state.
+//Agent will attack any targets in range and wait 0.2 seconds before deciding whether to attack again or change state. Only Enemies will switch states.
 //Switches to : Flee if the Enemy has been hit, Wander if Player is outside of sight-range, Chase if Player is within sight-range.
 class AttackState : public State
 {

@@ -24,7 +24,7 @@ void FleeState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 
 	//Change state if the proper conditions are met
-	if (Distance > An_Agent->m_sightRange * 2)
+	if (Distance > An_Agent->m_sightRange * 1.10)
 		sm->ChangeState(An_Agent, StateE::WANDER);
 	//~
 
