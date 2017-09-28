@@ -1,9 +1,15 @@
 #include "Player.h"
+#include "Vector2.h"
 #include "BoxObject.h"
+#include "StateEnum.h"
+#include "StateMachine.h"
+#include "BehaviourEnum.h"
+#include "SteeringBehaviour.h"
 
-Player::Player(Texture* Hit_Sprite, Vector2 Position)
+Player::Player(Texture* Hit_Sprite, Vector2 Position, Vector2 WindowSize)
 {
 	m_isPlayer = true;
+	m_windowSize = WindowSize;
 
 	m_velocityLimit = 800;
 	m_behaviours[BehaviourE::STEERING] = new SteeringBehaviour;
@@ -41,7 +47,7 @@ void Player::Update(float DeltaTime)
 
 	for (unsigned int i = 0; i < m_behaviours.size(); i++)
 		m_behaviours.at(BehaviourE(i))->Update(this, DeltaTime);
-	//~
+
 
 	//Move
 	m_velocity += m_force * DeltaTime;
@@ -56,11 +62,11 @@ void Player::Update(float DeltaTime)
 	}
 
 	m_position += (m_velocity * DeltaTime);
-	//~
+	
 
 	//Limit Player movement to window size
 	OnCollide(Vector2(m_radius, m_radius), Vector2(m_windowSize.x - m_radius, m_windowSize.y - m_radius));
-	//~
+	
 
 	//Move Agent out of other Agents and Objects, reverse velocity and degrade velocity on collision
 	for (auto TR : m_targets)
@@ -70,14 +76,11 @@ void Player::Update(float DeltaTime)
 	for (auto OB : m_objects)
 		if (OB->IsColliding(this) == true)
 			OnCollide(OB);
-
-	//~
 	
 	
 	//Count how much time has passed if counter is above 0 (Player has been hit), skips once each time the Player has been hit
 	if (m_flickerCounter > 0 && m_firstRound == false)
 		m_flickerTime += DeltaTime;
-	//~
 }
 
 void Player::Draw(Renderer2D* renderer)
@@ -94,7 +97,6 @@ void Player::Draw(Renderer2D* renderer)
 
 	else
 		renderer->drawSprite(m_sprite, m_position.x, m_position.y, m_radius * 2, m_radius * 2);
-	//~
 
 
 	//If 0.1 or more seconds has passed since the last sprite switch, and there are still switches left, switch sprites
@@ -103,5 +105,4 @@ void Player::Draw(Renderer2D* renderer)
 		m_flickerTime = 0;
 		m_flickerCounter--;
 	}
-	//~
 }

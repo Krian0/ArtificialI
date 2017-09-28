@@ -1,4 +1,5 @@
 #include "KeyboardForce.h"
+#include "input.h"
 
 KeyboardForce::KeyboardForce()
 {
@@ -27,7 +28,6 @@ Vector2 KeyboardForce::GetForce(Agent* An_Agent)
 
 	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
 		right = true;
-	//~
 
 
 	//Add corresponding direction value to movement vector
@@ -44,7 +44,7 @@ Vector2 KeyboardForce::GetForce(Agent* An_Agent)
 
 	if (right == true && left == false)
 		Force.x = 100;
-	//~
+
 
 	return Force;
 }

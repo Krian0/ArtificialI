@@ -1,4 +1,5 @@
 #include "WanderForce.h"
+#include <time.h>
 
 WanderForce::WanderForce()
 {

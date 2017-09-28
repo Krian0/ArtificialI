@@ -11,12 +11,16 @@ public:
 	FleeState();
 	~FleeState();
 
+	//Checks if State should change. Takes an Agent*, a StateMachine* and a float as parameters
 	void Update(Agent* An_Agent, StateMachine* sm, float DeltaTime) override;
+	
+	//Remove Arrival, add Flee SteeringForce, and call OnFlee for given Agent. Takes an Agent* as parameter
 	void Init(Agent* An_Agent) override;
+	
+	//Remove Flee SteeringForce from given Agent. Takes an Agent* as parameter
 	void Exit(Agent* An_Agent) override;
 
 private:
 
 	FleeForce* m_flee;
-
 };

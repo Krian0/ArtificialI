@@ -1,9 +1,10 @@
 #include "AvoidForce.h"
+#include "LineStruct.h"
 #include "BoxObject.h"
 
 AvoidForce::AvoidForce()
 {
-	m_weight = 1.00f;
+	m_weight = 6.00f;
 }
 
 AvoidForce::~AvoidForce()
@@ -17,48 +18,33 @@ Vector2 AvoidForce::GetForce(Agent* An_Agent)
 
 	Vector2 V = An_Agent->GetCurrentVelocity();
 
-	float DynamicLength = V.magnitude() / An_Agent->m_velocityLimit;
+	float Length = 40;
 
-	Line Ahead(An_Agent->GetPos(), V.normalise(), DynamicLength * 400);
-	Ahead.m_endPoint2 = V.normalise() * 60;
+	//Calculate end and endHalf
+	Line Ahead(An_Agent->GetPos(), V.normalise(), Length);
+	Ahead.m_endHalf = Ahead.m_end * 0.5;
 
-	BoxObject* ClosestObject = FindClosestObject(Ahead);
+	//Find closest Object
+	BoxObject* ClosestObject = FindClosestObject(Ahead, An_Agent->GetRadius());
 	Vector2 AvoidForce(0, 0);
 
 
-	//Check EndPoint with Object
-	if (ClosestObject->IsColliding(Ahead.m_endPoint) == true)
+	if (ClosestObject != nullptr) 
 	{
-		Vector2 COPos = ClosestObject->GetPos();
-		AvoidForce = Ahead.m_endPoint - COPos;
-
-		AvoidForce = AvoidForce.normalise() * (float)m_maxAvoidForce;
+		AvoidForce = Ahead.m_end - ClosestObject->GetPos();
+		AvoidForce = AvoidForce.normalise();
+		AvoidForce *= (float)m_maxAvoidForce;
 	}
 
-	//Check half-sized EndPoint with Object
-	else if (ClosestObject->IsColliding(Ahead.m_endPoint2) == true)
-	{
-		Vector2 COPos = ClosestObject->GetPos();
-		AvoidForce = Ahead.m_endPoint2 - COPos;
-
-		AvoidForce = AvoidForce.normalise() * (float)m_maxAvoidForce;
-	}
-
-	//Check Origin (current location) with Object
-	else if (ClosestObject->IsColliding(Ahead.m_origin) == true)
-	{
-		Vector2 COPos = ClosestObject->GetPos();
-		AvoidForce = Ahead.m_origin - COPos;
-
-		AvoidForce = AvoidForce.normalise() * (float)m_maxAvoidForce;
-	}
+	else 
+		AvoidForce *= 0;
 
 
 	return AvoidForce;
 }
 
 
-BoxObject* AvoidForce::FindClosestObject(Line Ahead)
+BoxObject* AvoidForce::FindClosestObject(Line Ahead, float Radius)
 {
 	BoxObject* ClosestObject;
 	float LastDistance = 99999;
@@ -74,5 +60,9 @@ BoxObject* AvoidForce::FindClosestObject(Line Ahead)
 		}
 	}
 
-	return ClosestObject;
+	if (ClosestObject->IsColliding(Ahead.m_origin, Radius +2) || ClosestObject->IsColliding(Ahead.m_end, Radius +2) || 
+		ClosestObject->IsColliding(Ahead.m_endHalf, Radius +2))
+		return ClosestObject;
+
+	return nullptr;
 }

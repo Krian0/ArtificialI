@@ -1,7 +1,11 @@
 #include "FleeState.h"
 #include "SteeringBehaviour.h"
+#include "BehaviourEnum.h"
+#include "StateMachine.h"
+#include "StateEnum.h"
 #include "FleeForce.h"
 #include "Agent.h"
+
 
 FleeState::FleeState()
 {
@@ -20,13 +24,10 @@ void FleeState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 	Vector2 TargetPos = An_Agent->GetTargets()[0]->GetPos();
 	Vector2 AgentPos = An_Agent->GetPos();
 	float Distance = (AgentPos - TargetPos).magnitude();
-	//~
-
 
 	//Change state if the proper conditions are met
 	if (Distance > An_Agent->m_sightRange * 1.10)
 		sm->ChangeState(An_Agent, StateE::WANDER);
-	//~
 
 
 	//Otherwise, continue to flee

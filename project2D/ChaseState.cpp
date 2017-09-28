@@ -1,6 +1,9 @@
 #include "ChaseState.h"
 #include "SteeringBehaviour.h"
+#include "BehaviourEnum.h"
 #include "ArrivalForce.h"
+#include "StateMachine.h"
+#include "StateEnum.h"
 #include "SeekForce.h"
 #include "Agent.h"
 
@@ -21,8 +24,6 @@ void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
 	//Work out the distance from Enemy to Player
 	float Distance = (An_Agent->GetPos() - An_Agent->GetTargets()[0]->GetPos()).magnitude();
-	//~
-
 
 	//Change state if the proper conditions are met
 	if (Distance > An_Agent->m_sightRange)
@@ -33,7 +34,6 @@ void ChaseState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 
 	if (Distance <= An_Agent->m_attackRange)
 		sm->ChangeState(An_Agent, StateE::ATTACK);
-	//~
 
 
 	//Otherwise, continue to chase

@@ -1,8 +1,12 @@
 #include "Agent.h"
+#include "Vector2.h"
 #include "BoxObject.h"
-#include "SteeringBehaviour.h"
 #include "AStarGraph.h"
-#include <time.h> 
+#include "BehaviourEnum.h"
+#include "SteeringBehaviour.h"
+#include <time.h>
+#include <vector>
+using std::vector;
 
 void Agent::AddForce(Vector2 force)
 {
@@ -44,10 +48,12 @@ void Agent::OnCollide(Vector2 OtherAgentPos)
 	OnCollide(OtherAgentPos, OtherAgentPos, true);
 }
 
-void Agent::OnCollide(BoxObject* Object, float VelocityDegrade)
+void Agent::OnCollide(BoxObject* Object)
 {
 	Vector2 Min = Object->GetMin();
 	Vector2 Max = Object->GetMax();
+	Vector2 Pos = Object->GetPos();
+	float VelocityDegrade = 0.40f;
 
 	if (m_position.y > Max.y)
 		CollidePlus(Max.y + m_radius + 2, VelocityDegrade, m_position.y, m_velocity.y, false);
@@ -140,7 +146,7 @@ bool Agent::IsCollidingWithNode(Vector2 Point)
 {
 	float Distance = (Point - m_position).magnitude();
 
-	if (Distance <= m_radius * 10)
+	if (Distance <= m_radius * 4)
 		return true;
 
 	return false;
@@ -179,7 +185,7 @@ stack<Vector2> Agent::GetPathfindingVectors()
 	}
 
 
-	return m_pathfinding->BreadthFirstSearch(m_pathfinding->FindClosestNode(this), m_pathfinding->m_nodes[NodeNum]);
+	return m_pathfinding->AStarSearch(m_pathfinding->FindClosestNode(this), m_pathfinding->m_nodes[NodeNum]);
 }
 
 

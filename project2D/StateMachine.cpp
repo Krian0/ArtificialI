@@ -1,10 +1,10 @@
 #include "StateMachine.h"
-#include "Agent.h"
-
-#include "AttackState.h"
 #include "WanderState.h"
+#include "AttackState.h"
 #include "ChaseState.h"
+#include "StateEnum.h"
 #include "FleeState.h"
+#include "Agent.h"
 
 StateMachine::StateMachine(Agent* An_Agent, StateE Start_State)
 {

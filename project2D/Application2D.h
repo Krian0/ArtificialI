@@ -3,7 +3,9 @@
 #include "Application.h"
 #include "Renderer2D.h"
 #include "Audio.h"
+#include "Font.h"
 
+#include "AStarStructs.h"
 #include "AStarGraph.h"
 #include "BoxObject.h"
 #include "Player.h"
@@ -32,6 +34,8 @@ protected:
 
 	aie::Texture* m_enemySprite;
 	aie::Texture* m_hitSprite;
+
+	aie::Font* m_font;
 
 	AStarGraph*		m_pathfinding;
 

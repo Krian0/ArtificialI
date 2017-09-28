@@ -34,9 +34,6 @@
     <Filter Include="Header Files\Etc">
       <UniqueIdentifier>{f5c01e34-fa88-4418-a8a0-fc616075a726}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Etc">
-      <UniqueIdentifier>{06bb37aa-7dae-4187-93ea-b4f623ee8411}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\FSM\States">
       <UniqueIdentifier>{577bf086-e2ff-42f4-8d3e-23dd72fb63e0}</UniqueIdentifier>
     </Filter>
@@ -130,7 +127,7 @@
       <Filter>Source Files\Steering\Forces</Filter>
     </ClCompile>
     <ClCompile Include="BoxObject.cpp">
-      <Filter>Source Files\Entities\Agents</Filter>
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="AvoidForce.h">
       <Filter>Header Files\Steering\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="AStarStructs.h">
+      <Filter>Header Files\Etc</Filter>
+    </ClInclude>
+    <ClInclude Include="LineStruct.h">
+      <Filter>Header Files\Etc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

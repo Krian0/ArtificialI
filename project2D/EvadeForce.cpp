@@ -12,32 +12,29 @@ EvadeForce::~EvadeForce()
 
 Vector2 EvadeForce::GetForce(Agent* An_Agent)
 {
-	vector<Agent*> Friends = FindClosestFriends(An_Agent->GetFriends(), An_Agent);
-
-	if (Friends.size() == 0)
-		return Vector2(0, 0);
+	Agent* ClosestFriend = FindClosestFriend(An_Agent->GetFriends(), An_Agent);
 
 	Vector2 Force(0, 0);
 
-	for (unsigned int i = 0; i < Friends.size(); i++)
+	if (ClosestFriend != nullptr)
 	{
-		Vector2 V = An_Agent->GetPos() - Friends[i]->GetPos() + Friends[i]->GetCurrentVelocity();
-		Vector2 Normalized_V = V.normalise() * (float)An_Agent->m_velocityLimit;
-		Vector2 TempForce = (Normalized_V - An_Agent->GetCurrentVelocity());
+			Vector2 V = An_Agent->GetPos() - ClosestFriend->GetPos() + ClosestFriend->GetCurrentVelocity();
+			Vector2 Normalized_V = V.normalise() * (float)An_Agent->m_velocityLimit;
+			Vector2 TempForce = (Normalized_V - An_Agent->GetCurrentVelocity());
 
-		Force += TempForce - An_Agent->GetCurrentVelocity();
+			Force = TempForce;
 	}
 
 	return Force;
 }
 
-vector<Agent*> EvadeForce::FindClosestFriends(vector<Agent*> Friends, Agent* An_Agent)
+Agent* EvadeForce::FindClosestFriend(vector<Agent*> Friends, Agent* An_Agent)
 {
-	vector<Agent*> FriendsInRange;
+	Agent* FriendInRange = nullptr;
 
 	for (unsigned int i = 0; i < Friends.size(); i++)
 	{
-		if (Friends[i] != NULL)
+		if (Friends[i] != nullptr)
 		{
 			Vector2 Pos = Friends[i]->GetPos() - An_Agent->GetPos();
 
@@ -46,10 +43,9 @@ vector<Agent*> EvadeForce::FindClosestFriends(vector<Agent*> Friends, Agent* An_
 
 			//Check if any friend Agents are within range, and add them to the FriendsInRange vector if they are
 			if (Pos.dot(Pos) <= CombinedRadiiSquared)
-				FriendsInRange.push_back(Friends[i]);
-			//~
+				FriendInRange = Friends[i];
 		}
 	}
 
-	return FriendsInRange;
+	return FriendInRange;
 }

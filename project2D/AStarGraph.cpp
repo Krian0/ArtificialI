@@ -1,10 +1,10 @@
 #include "AStarGraph.h"
+#include "AStarStructs.h"
 #include "BoxObject.h"
 #include "Agent.h"
 
 AStarGraph::AStarGraph()
 {
-	m_windowExtents = Vector2(1280, 720);
 }
 
 AStarGraph::~AStarGraph()
@@ -16,17 +16,18 @@ AStarGraph::~AStarGraph()
 }
 
 
-void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColumn, vector<BoxObject*> Objects)
+void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColumn, vector<BoxObject*> Objects, Vector2 WindowSize)
 {
 	for (unsigned int i = 0; i < (NodesInRow * NodesInColumn); i++)
 		AddNode(i);
 
+	//Calculate space between each Node
+	float SpaceX = WindowSize.x / NodesInColumn;
+	float SpaceY = WindowSize.y / NodesInRow;
+	
 
 	int NodeNum = 0;
-	float SpaceX = m_windowExtents.x / NodesInColumn;
-	float SpaceY = m_windowExtents.y / NodesInRow;
 	Vector2 LastVec(SpaceX / 2, SpaceY / 2);
-
 
 	for (unsigned int r = 0; r < NodesInRow; r++)
 	{
@@ -36,7 +37,7 @@ void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColu
 			if (NodeNum > 0)
 			{
 				LastVec.x += SpaceX;
-				if (LastVec.x > m_windowExtents.x)
+				if (LastVec.x > WindowSize.x)
 					LastVec = Vector2(SpaceX / 2, LastVec.y += SpaceY);
 			}
 
@@ -55,9 +56,10 @@ void AStarGraph::SetGraphNodes(unsigned int NodesInRow, unsigned int NodesInColu
 		}
 	}
 
+
 	//Remove any Nodes colliding with any Objects
-	for (auto OB : Objects) 
-		for (unsigned int i = 0; i < m_nodes.size(); i++) 
+	for (int i = (unsigned int)m_nodes.size() - 1; i >= 0; i--) 
+		for (auto OB : Objects)
 			if (OB->IsColliding(m_nodes[i]->m_position))
 				RemoveNode(i);
 }
@@ -81,7 +83,7 @@ Node* AStarGraph::FindClosestNode(Agent* An_Agent)
 	return ClosestNode;
 }
 
-stack<Vector2> AStarGraph::BreadthFirstSearch(Node* Start_Node, Node* End_Node)
+stack<Vector2> AStarGraph::AStarSearch(Node* Start_Node, Node* End_Node)
 {
 	for (auto Nodes : m_nodes)
 	{
@@ -97,6 +99,7 @@ stack<Vector2> AStarGraph::BreadthFirstSearch(Node* Start_Node, Node* End_Node)
 
 	while (OpenList.empty() != true)
 	{
+		//Sort list from lowest FScore to highest
 		OpenList.sort();
 
 		CurrentNode = OpenList.front();
@@ -111,6 +114,7 @@ stack<Vector2> AStarGraph::BreadthFirstSearch(Node* Start_Node, Node* End_Node)
 		{
 			Node* ENode = Edges->m_end;
 
+			//Calculate Scores
 			if (IsNodeOnList(ENode, ClosedList) == false)
 			{
 				ENode->m_gScore = CurrentNode->m_gScore + Edges->m_cost;

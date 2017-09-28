@@ -42,7 +42,6 @@ Vector2 ArrivalForce::GetForce(Agent* An_Agent)
 			Force += An_Agent->GetCurrentVelocity() * -1 * (1 - speedMultiplier);
 		}
 	}
-	//~
 
 	//Node ArrivalForce calculations
 	Vector2 NPos(0, 0);
@@ -55,7 +54,6 @@ Vector2 ArrivalForce::GetForce(Agent* An_Agent)
 		speedMultiplier = NDistance / 400;
 		Force += An_Agent->GetCurrentVelocity() * -1 * (1-speedMultiplier);
 	}
-	//~
 
 
 	return Force;

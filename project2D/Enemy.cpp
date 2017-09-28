@@ -1,9 +1,16 @@
 #include "Enemy.h"
+#include "Vector2.h"
 #include "BoxObject.h"
-#include "AStarGraph.h"
+#include "StateEnum.h"
+#include "StateMachine.h"
+#include "BehaviourEnum.h"
+#include "SteeringBehaviour.h"
 
-Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position, AStarGraph* Graph)
+Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Position, Vector2 WindowSize, AStarGraph* Graph)
 {
+	m_isPlayer = false;
+	m_windowSize = WindowSize;
+
 	m_targets.push_back(Target);
 	m_behaviours[BehaviourE::STEERING] = new SteeringBehaviour;
 	m_stateMachine = new StateMachine(this, StateE::WANDER);
@@ -20,8 +27,6 @@ Enemy::Enemy(Agent* Target, Texture* Sprite, Texture* Hit_Sprite, Vector2 Positi
 	m_sightRange = 250;
 	m_attackRange = 30;
 	m_velocityLimit = 480;
-
-	m_isPlayer = false;
 
 	m_pathfinding = Graph;
 	m_pathfindingMode = false;

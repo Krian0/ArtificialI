@@ -1,9 +1,13 @@
 #include "WanderState.h"
 #include "SteeringBehaviour.h"
-#include "AvoidForce.h"
+#include "BehaviourEnum.h"
+#include "StateMachine.h"
 #include "WanderForce.h"
 #include "EvadeForce.h"
+#include "AvoidForce.h"
+#include "StateEnum.h"
 #include "Agent.h"
+
 
 WanderState::WanderState() 
 {
@@ -23,7 +27,6 @@ void WanderState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 {
 	//Work out the distance from Enemy to Player
 	float Distance = (An_Agent->GetPos() - An_Agent->GetTargets()[0]->GetPos()).magnitude();
-	//~
 
 	//Change state if the proper conditions are met
 	if (Distance <= An_Agent->m_sightRange || An_Agent->PathfindingModeIsOn() == true)
@@ -31,7 +34,6 @@ void WanderState::Update(Agent* An_Agent, StateMachine* sm, float DeltaTime)
 		sm->ChangeState(An_Agent, StateE::CHASE);
 		return;
 	}
-	//~
 
 	//Otherwise, continue to wander
 }

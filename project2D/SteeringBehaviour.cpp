@@ -1,4 +1,6 @@
 #include "SteeringBehaviour.h"
+#include "SteeringForce.h"
+#include "BehaviourEnum.h"
 
 SteeringBehaviour::SteeringBehaviour()
 {

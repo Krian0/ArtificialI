@@ -1,6 +1,9 @@
 #include "AttackState.h"
 #include "SteeringBehaviour.h"
+#include "BehaviourEnum.h"
 #include "KeyboardForce.h"
+#include "StateMachine.h"
+#include "StateEnum.h"
 #include "Agent.h"
 
 AttackState::AttackState()
@@ -75,7 +78,7 @@ void AttackState::Init(Agent* An_Agent)
 
 void AttackState::Exit(Agent* An_Agent)
 {
-	An_Agent->RemoveSteering(SteeringE::KEYBOARD);
+
 }
 
 

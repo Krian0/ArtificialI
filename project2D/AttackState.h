@@ -1,5 +1,7 @@
 #pragma once
 #include "State.h"
+#include <vector>
+using std::vector;
 
 class KeyboardForce;
 
@@ -11,8 +13,13 @@ public:
 	AttackState();
 	~AttackState();
 
+	//Looks for targets in attack-range, checks if State should change. Takes an Agent*, a StateMachine* and a float as parameters
 	void Update(Agent* An_Agent, StateMachine* sm, float DeltaTime) override;
+	
+	//Resets m_waitTimer and m_hasAttacked, adds Keyboard SteeringForce to given Agent (Player only). Takes an Agent* as parameter
 	void Init(Agent* An_Agent) override;
+	
+	//N/A
 	void Exit(Agent* An_Agent) override;
 
 private:

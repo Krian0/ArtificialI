@@ -116,6 +116,7 @@
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="ArrivalForce.h" />
+    <ClInclude Include="AStarStructs.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BehaviourEnum.h" />
     <ClInclude Include="BoxObject.h" />
@@ -128,6 +129,7 @@
     <ClInclude Include="IBehaviour.h" />
     <ClInclude Include="KeyboardForce.h" />
     <ClInclude Include="AvoidForce.h" />
+    <ClInclude Include="LineStruct.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SeekForce.h" />
     <ClInclude Include="State.h" />
